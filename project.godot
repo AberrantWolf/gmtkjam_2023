@@ -11,7 +11,10 @@ config_version=5
 [application]
 
 config/name="GMTK Jam 2023"
-config/features=PackedStringArray("4.0", "Mobile")
+run/main_scene="res://scenes/main_menu.tscn"
+config/features=PackedStringArray("4.1", "Mobile")
+boot_splash/bg_color=Color(1, 1, 1, 1)
+boot_splash/image="res://assets/skeejy_splash.png"
 config/icon="res://icon.svg"
 
 [dotnet]
