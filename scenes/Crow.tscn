@@ -111,9 +111,11 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rixm5"]
-radius = 129.016
+radius = 26.0192
 
 [node name="Crow" type="Area2D"]
+collision_mask = 14
+linear_damp = -1.0
 script = ExtResource("1_85rju")
 Speed = 500
 Separation = 15
