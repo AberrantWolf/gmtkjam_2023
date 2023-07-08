@@ -13,7 +13,6 @@ public partial class Crow : Area2D
     [Export]
     public int Separation = 100;
 
-    private Vector2? mouseClickPos { get; set; } = null;
     private Vector2 lastDirection { get; set; } = Vector2.Right;
 
     private IEnumerable<Crow> allCrows = null;
@@ -27,7 +26,6 @@ public partial class Crow : Area2D
     {
         if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Left)
         {
-            mouseClickPos = mouseButton.Position;
             CurrentFramesOfAddedWeight = this.FramesOfAddedWeight;
         }
     }
@@ -64,9 +62,7 @@ public partial class Crow : Area2D
 
     public override void _Process(double delta)
     {
-        // TODO: This isn't in world space yet -- convert to world space
-        var mouseLocation = GetViewport().GetMousePosition();
-
+        var mouseLocation = CrowHiveMind.Instance.MouseLocation;
 
         //Aim towards center
 
@@ -85,7 +81,7 @@ public partial class Crow : Area2D
         if (CurrentFramesOfAddedWeight > 0)
         {
             CurrentFramesOfAddedWeight--;
-            toMouse = (this.mouseClickPos.Value - this.Position).Normalized() * 10;
+            toMouse = (CrowHiveMind.Instance.FocusPoint - this.Position).Normalized() * 10;
         }
 
         var toCOM = (centerOfMass - this.Position).Normalized();
