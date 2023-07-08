@@ -13,7 +13,7 @@ length = 0.001
 
 [sub_resource type="Animation" id="Animation_6xjl2"]
 resource_name = "splash_animation"
-length = 5.5
+length = 6.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -141,6 +141,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Bubble 1" type="TextureRect" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
 material = SubResource("CanvasItemMaterial_7h7pp")
 anchors_preset = 3
 anchor_left = 1.0
@@ -157,6 +158,7 @@ scale = Vector2(0.3, 0.3)
 texture = ExtResource("3_roxre")
 
 [node name="Bubble 2" type="TextureRect" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
 material = SubResource("CanvasItemMaterial_5btf8")
 anchors_preset = 3
 anchor_left = 1.0
@@ -173,6 +175,7 @@ scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_n73v8")
 
 [node name="Bubble 3" type="TextureRect" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0.6)
 material = SubResource("CanvasItemMaterial_5btf8")
 anchors_preset = 3
 anchor_left = 1.0
@@ -196,4 +199,4 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color(0, 0, 0, 1)
+color = Color(0, 0, 0, 0)
