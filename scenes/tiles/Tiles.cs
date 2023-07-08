@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 public partial class Tiles : TileMap
 {
-    [Export]
-    private float mountainFrequency = 0.02f;
+	[Export]
+	private float mountainFrequency = 0.02f;
 
-    [Export]
-    private float mountainAmplitude = 1f;
+	[Export]
+	private float mountainAmplitude = 1f;
 
     [Export]
     private float mountainThreshold = 0.3f;
@@ -17,8 +17,8 @@ public partial class Tiles : TileMap
     [Export]
     private float forestFrequency = 0.02f;
 
-    [Export]
-    private float forestAmplitude = 1f;
+	[Export]
+	private float forestAmplitude = 1f;
 
     [Export]
     private float forestThreshold = 0.2f;
@@ -26,8 +26,8 @@ public partial class Tiles : TileMap
     [Export]
     private float waterFrequency = 0.02f;
 
-    [Export]
-    private float waterAmplitude = 1f;
+	[Export]
+	private float waterAmplitude = 1f;
 
     [Export]
     private float waterThreshold = 0.35f;
@@ -35,8 +35,8 @@ public partial class Tiles : TileMap
     [Export]
     private float fieldFrequency = 0.1f;
 
-    [Export]
-    private float fieldAmplitude = 1f;
+	[Export]
+	private float fieldAmplitude = 1f;
 
     [Export]
     private float fieldThreshold = 0.2f;
@@ -44,8 +44,8 @@ public partial class Tiles : TileMap
     [Export]
     private float farmhouseFrequency = 0.01f;
 
-    [Export]
-    private float farmhouseAmplitude = 1f;
+	[Export]
+	private float farmhouseAmplitude = 1f;
 
     [Export]
     private float farmhouseThreshold = 0.42f;
