@@ -1,0 +1,127 @@
+[gd_scene load_steps=29 format=3 uid="uid://d2mssdh3j62y"]
+
+[ext_resource type="Script" path="res://scenes/Crow.cs" id="1_85rju"]
+[ext_resource type="Texture2D" uid="uid://ddtih5018pwx8" path="res://assets/sprites/crow/crow01.png" id="2_wtt0h"]
+[ext_resource type="Texture2D" uid="uid://oqvhpfkd31nw" path="res://assets/sprites/crow/crow02.png" id="3_3o2hc"]
+[ext_resource type="Texture2D" uid="uid://bx7ibgoh5471c" path="res://assets/sprites/crow/crow03.png" id="4_65h7i"]
+[ext_resource type="Texture2D" uid="uid://cdpjvkkkinpp7" path="res://assets/sprites/crow/crow04.png" id="5_gepp3"]
+[ext_resource type="Texture2D" uid="uid://t3q68hehcbqn" path="res://assets/sprites/crow/crow05.png" id="6_pr1rx"]
+[ext_resource type="Texture2D" uid="uid://4bef8smbgqlu" path="res://assets/sprites/crow/crow06.png" id="7_yex2o"]
+[ext_resource type="Texture2D" uid="uid://cd3cfoynpndvs" path="res://assets/sprites/crow/crow07.png" id="8_loc0n"]
+[ext_resource type="Texture2D" uid="uid://bh3f6dkf3wd2o" path="res://assets/sprites/crow/crow08.png" id="9_e1sh1"]
+[ext_resource type="Texture2D" uid="uid://ceba3rsr610mt" path="res://assets/sprites/crow/crow09.png" id="10_5wfwx"]
+[ext_resource type="Texture2D" uid="uid://bja8vc8sd6dp2" path="res://assets/sprites/crow/crow10.png" id="11_cupwd"]
+[ext_resource type="Texture2D" uid="uid://cjh4th53dybqx" path="res://assets/sprites/crow/crow11.png" id="12_oanmv"]
+[ext_resource type="Texture2D" uid="uid://dbwlhnrv4mnuf" path="res://assets/sprites/crow/crow12.png" id="13_hjmev"]
+[ext_resource type="Texture2D" uid="uid://2tbxpq7ykp70" path="res://assets/sprites/crow/crow13.png" id="14_10uim"]
+[ext_resource type="Texture2D" uid="uid://c4yqxur1lakfr" path="res://assets/sprites/crow/crow14.png" id="15_e3hj5"]
+[ext_resource type="Texture2D" uid="uid://2ioy6e0ursd7" path="res://assets/sprites/crow/crow15.png" id="16_dh6kt"]
+[ext_resource type="Texture2D" uid="uid://dl24fxeu36te" path="res://assets/sprites/crow/crow16.png" id="17_21736"]
+[ext_resource type="Texture2D" uid="uid://bd1e8pxsomc3n" path="res://assets/sprites/crow/crow17.png" id="18_70e1t"]
+[ext_resource type="Texture2D" uid="uid://do6cgkbiaqcws" path="res://assets/sprites/crow/crow18.png" id="19_uxk6m"]
+[ext_resource type="Texture2D" uid="uid://ctsu3utbijdmh" path="res://assets/sprites/crow/crow19.png" id="20_7qw1q"]
+[ext_resource type="Texture2D" uid="uid://w0iyam71cwnh" path="res://assets/sprites/crow/crow20.png" id="21_kamdf"]
+[ext_resource type="Texture2D" uid="uid://c6lbyoccqqpaf" path="res://assets/sprites/crow/crow21.png" id="22_dhxwt"]
+[ext_resource type="Texture2D" uid="uid://bx43rtulvhigr" path="res://assets/sprites/crow/crow22.png" id="23_wk202"]
+[ext_resource type="Texture2D" uid="uid://dfbq21wfmx52" path="res://assets/sprites/crow/crow23.png" id="24_7lron"]
+[ext_resource type="Texture2D" uid="uid://cjx14152yrfde" path="res://assets/sprites/crow/crow24.png" id="25_j60rj"]
+[ext_resource type="Texture2D" uid="uid://1eek8smc6oys" path="res://assets/sprites/crow/crow25.png" id="26_6m7uq"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p5gpf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_wtt0h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3o2hc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_65h7i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_gepp3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_pr1rx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_yex2o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_loc0n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_e1sh1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_5wfwx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_cupwd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_oanmv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_hjmev")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_10uim")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_e3hj5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_dh6kt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_21736")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_70e1t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_uxk6m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_7qw1q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_kamdf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_dhxwt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_wk202")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_7lron")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_j60rj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_6m7uq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rixm5"]
+radius = 129.016
+
+[node name="Crow" type="Area2D"]
+script = ExtResource("1_85rju")
+Speed = 500
+Separation = 50
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.05, 0.05)
+sprite_frames = SubResource("SpriteFrames_p5gpf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rixm5")
