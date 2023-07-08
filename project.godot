@@ -11,11 +11,21 @@ config_version=5
 [application]
 
 config/name="GMTK Jam 2023"
-run/main_scene="res://scenes/World.tscn"
+run/main_scene="res://scenes/splash/splash.tscn"
 config/features=PackedStringArray("4.1", "C#", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/show_image=false
 boot_splash/image="res://assets/skeejy_splash.png"
-config/icon="res://icon.svg"
+boot_splash/fullsize=false
+boot_splash/use_filter=false
+config/icon="res://assets/images/icon.png"
+boot_splash/minimum_display_time=3000
+
+[display]
+
+window/size/viewport_width=1270
+window/size/viewport_height=720
+window/stretch/aspect="ignore"
 
 [dotnet]
 
@@ -24,3 +34,4 @@ project/assembly_name="Gmtkjam 2023"
 [rendering]
 
 renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0.227451, 0.227451, 0.227451, 1)
