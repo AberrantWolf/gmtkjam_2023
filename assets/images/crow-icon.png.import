@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3bqxa3s3g4je"
-path="res://.godot/imported/paper-tile-2.jpg-e38b51d3592aeec56ae6a3d6fb344ed6.ctex"
+uid="uid://dpljo8othttdh"
+path="res://.godot/imported/crow-icon.png-0a29a81ebdfc953127e1073dad05a1ee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/paper-tile-2.jpg"
-dest_files=["res://.godot/imported/paper-tile-2.jpg-e38b51d3592aeec56ae6a3d6fb344ed6.ctex"]
+source_file="res://assets/images/crow-icon.png"
+dest_files=["res://.godot/imported/crow-icon.png-0a29a81ebdfc953127e1073dad05a1ee.ctex"]
 
 [params]
 
