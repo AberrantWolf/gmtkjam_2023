@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/World.cs" id="1_p1gqh"]
 [ext_resource type="Script" path="res://scenes/MainCam.cs" id="2_iwym8"]
 [ext_resource type="PackedScene" uid="uid://db5nqj7gpkm0m" path="res://scenes/tiles/Tiles.tscn" id="3_evb88"]
-[ext_resource type="PackedScene" uid="uid://dawefk8qthgdl" path="res://scenes/ScareCrow.tscn" id="3_wc5q5"]
+[ext_resource type="PackedScene" uid="uid://dawefk8qthgdl" path="res://scenes/Enemies/ScareCrow.tscn" id="3_wc5q5"]
 [ext_resource type="Script" path="res://scenes/tiles/Tiles.cs" id="4_4rxjd"]
 
 [node name="World" type="Node2D"]
