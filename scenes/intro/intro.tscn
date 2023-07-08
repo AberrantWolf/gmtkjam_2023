@@ -29,6 +29,7 @@ _data = {
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+autoplay = "intro"
 libraries = {
 "": SubResource("AnimationLibrary_8rbwo")
 }
