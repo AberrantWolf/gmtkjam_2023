@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://db5nqj7gpkm0m"]
+
+[ext_resource type="Texture2D" uid="uid://drpui6ou6wnoh" path="res://assets/sprites/tiles.png" id="1_0urk7"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ywav0"]
+resource_name = "Tiles"
+texture = ExtResource("1_0urk7")
+0:0/next_alternative_id = 2
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/custom_data_0 = "Empty"
+1:0/next_alternative_id = 2
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/custom_data_0 = "Field"
+2:0/0 = 0
+2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/custom_data_0 = "FarmHouse"
+3:0/0 = 0
+3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:0/0/physics_layer_0/angular_velocity = 0.0
+3:0/0/custom_data_0 = "Lake"
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/custom_data_0 = "Forest"
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0/custom_data_0 = "Lake"
+3:1/0 = 0
+3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:1/0/physics_layer_0/angular_velocity = 0.0
+2:1/0 = 0
+2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:1/0/physics_layer_0/angular_velocity = 0.0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:1/0/custom_data_0 = "Mountain"
+
+[sub_resource type="TileSet" id="TileSet_p068d"]
+physics_layer_0/collision_layer = 1
+custom_data_layer_0/name = "TileName"
+custom_data_layer_0/type = 4
+sources/0 = SubResource("TileSetAtlasSource_ywav0")
+
+[node name="TileMap" type="TileMap"]
+tile_set = SubResource("TileSet_p068d")
+format = 2

@@ -18,7 +18,7 @@ public partial class Crow : Area2D
 	{
 		if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Left)
 		{
-			mouseClickPos = mouseButton.Position;
+			mouseClickPos = GetGlobalMousePosition();
 		}
 	}
 
@@ -36,13 +36,13 @@ public partial class Crow : Area2D
 		var distance = KeepDistance();
 		
 		var targetPos = com+distance+mousePos;
-		this.Position += targetPos;
+		this.GlobalPosition += targetPos;
 		this.Rotation = targetPos.Angle();
 	}
 
 	private Vector2 GoToMouse()
 	{
-		return (mouseClickPos - this.Position)/Speed;
+		return (mouseClickPos - this.GlobalPosition)/Speed;
 	}
 
 	private Vector2 PerceivedCentreOfMass()
@@ -54,12 +54,12 @@ public partial class Crow : Area2D
 		{
 			if (crow != this)
 			{
-				perceivedCOM += crow.Position;
+				perceivedCOM += crow.GlobalPosition;
 			}
 		}
 		
 		perceivedCOM /= allCrows.Count - 1;
-		return (perceivedCOM - this.Position)/Speed;
+		return (perceivedCOM - this.GlobalPosition)/Speed;
 	}
 
 	private Vector2 KeepDistance()
@@ -70,10 +70,10 @@ public partial class Crow : Area2D
 		{
 			if (crow != this)
 			{
-				var distance = crow.Position.DistanceTo(this.Position);
+				var distance = crow.GlobalPosition.DistanceTo(this.GlobalPosition);
 				if (distance < Separation)
 				{
-					collision -= (crow.Position - this.Position);
+					collision -= (crow.GlobalPosition - this.GlobalPosition);
 				}
 			}
 		}
