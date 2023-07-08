@@ -15,4 +15,9 @@ public partial class ScareCrow : Node2D
 	public override void _Process(double delta)
 	{
 	}
+
+	public void _on_area_entered(Crow crow)
+	{
+		Console.WriteLine("Oh nos");
+	}
 }

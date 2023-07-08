@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dawefk8qthgdl"]
+[gd_scene load_steps=7 format=3 uid="uid://dawefk8qthgdl"]
 
+[ext_resource type="Script" path="res://scenes/ScareCrow.cs" id="1_c5dtu"]
 [ext_resource type="Texture2D" uid="uid://cb0r8u4lpwix5" path="res://assets/sprites/scarecrow/scarecrow_0000_Layer-3.png" id="1_qdewf"]
 [ext_resource type="Texture2D" uid="uid://4nrg0c41the5" path="res://assets/sprites/scarecrow/scarecrow_0001_Layer-2-copy.png" id="2_3c04g"]
 [ext_resource type="Texture2D" uid="uid://yg243d7uvmnq" path="res://assets/sprites/scarecrow/scarecrow_0002_Layer-2.png" id="3_7ogsp"]
@@ -30,6 +31,7 @@ radius = 132.015
 [node name="ScareCrow" type="Area2D"]
 collision_layer = 2
 collision_mask = 15
+script = ExtResource("1_c5dtu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_0tsu8")
@@ -38,3 +40,5 @@ frame_progress = 0.161726
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_rrfod")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
