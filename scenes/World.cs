@@ -36,7 +36,7 @@ public partial class World : Node2D
 		}
 	}
 
-	private void AddAdditonalCrow()
+	public void AddAdditonalCrow()
 	{
 		var random = new Random();
 		var screenSize = GetViewportRect().Size;
@@ -57,7 +57,7 @@ public partial class World : Node2D
 		});
 	}
 
-	private void UnceremoniouslyMonsterAHelplessCrow()
+	public void UnceremoniouslyMonsterAHelplessCrow()
 	{
 		var crows = GetTree().GetNodesInGroup(groupName).Select(x=>x as Crow);
 		var helplessCrowToBeMurdered = crows.FirstOrDefault();

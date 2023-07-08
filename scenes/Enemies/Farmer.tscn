@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://cg6rs1oc5nhrq"]
+
+[ext_resource type="Script" path="res://scenes/Enemies/Farmer.cs" id="1_s7or1"]
+[ext_resource type="Texture2D" uid="uid://g15u6ii640mp" path="res://assets/sprites/farmer/Farmer_0000_Layer-2-copy.png" id="1_yfow5"]
+[ext_resource type="Texture2D" uid="uid://nyjv3mnwquat" path="res://assets/sprites/farmer/Farmer_0001_Layer-2.png" id="2_ejvqr"]
+[ext_resource type="Texture2D" uid="uid://b560y2egglqy3" path="res://assets/sprites/farmer/lasor.png" id="4_mp08t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rd5gm"]
+size = Vector2(58, 72)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2w1u3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_yfow5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ejvqr")
+}],
+"loop": true,
+"name": &"default",
+"speed": 60.0
+}]
+
+[node name="Farmer" type="Area2D"]
+script = ExtResource("1_s7or1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 2)
+shape = SubResource("RectangleShape2D_rd5gm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_2w1u3")
+frame_progress = 0.667766
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+scale = Vector2(1.64062, 1.82812)
+texture = ExtResource("4_mp08t")
+offset = Vector2(2.08165e-12, -32)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

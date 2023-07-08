@@ -1,8 +1,12 @@
 using Godot;
 using System;
 
-public partial class ScareCrow : Node2D
+public partial class ScareCrow : EnemyEntity
 {
+	public ScareCrow(): base(10) {
+
+	}
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -16,8 +20,13 @@ public partial class ScareCrow : Node2D
 	{
 	}
 
+    protected override void onKilled()
+    {
+		var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		animatedSprite2D.Hide();
+    }
 	public void _on_area_entered(Crow crow)
 	{
-		Console.WriteLine("Oh nos");
+		this.TakeHit();
 	}
 }
