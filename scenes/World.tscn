@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bad2ca6hfimqv"]
+[gd_scene load_steps=4 format=3 uid="uid://bad2ca6hfimqv"]
 
 [ext_resource type="Script" path="res://scenes/World.cs" id="1_p1gqh"]
 [ext_resource type="Script" path="res://scenes/MainCam.cs" id="2_iwym8"]
+[ext_resource type="PackedScene" uid="uid://dawefk8qthgdl" path="res://scenes/ScareCrow.tscn" id="3_wc5q5"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_p1gqh")
@@ -9,3 +10,6 @@ script = ExtResource("1_p1gqh")
 [node name="MainCam" type="Camera2D" parent="."]
 anchor_mode = 0
 script = ExtResource("2_iwym8")
+
+[node name="ScareCrow" parent="." instance=ExtResource("3_wc5q5")]
+position = Vector2(765, 432)
