@@ -1,0 +1,199 @@
+[gd_scene load_steps=13 format=3 uid="uid://d23ggrsnqlxhk"]
+
+[ext_resource type="Script" path="res://scenes/splash/SceneTransition.cs" id="1_8lfu1"]
+[ext_resource type="Texture2D" uid="uid://ki27m1vgm00r" path="res://assets/images/paper.jpg" id="1_a57qw"]
+[ext_resource type="Texture2D" uid="uid://w3qw4rjbgsdt" path="res://assets/images/skeejy-no-background.png" id="2_cguct"]
+[ext_resource type="PackedScene" uid="uid://dtw3l2qh2mtkf" path="res://scenes/intro/intro.tscn" id="2_mvmr1"]
+[ext_resource type="Texture2D" uid="uid://d4hcn45iet6vy" path="res://assets/images/bubble-1.png" id="3_roxre"]
+[ext_resource type="Texture2D" uid="uid://cfi4a76cl27ki" path="res://assets/images/bubble-2.png" id="4_n73v8"]
+[ext_resource type="Texture2D" uid="uid://2l7uk8c1avbm" path="res://assets/images/bubble-3.png" id="5_npnqo"]
+
+[sub_resource type="Animation" id="Animation_lgmxp"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_6xjl2"]
+resource_name = "splash_animation"
+length = 5.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 4, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasLayer/Bubble 1:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3, 3.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CanvasLayer/Bubble 2:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CanvasLayer/Bubble 3:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1, 1.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CanvasLayer/AnimationPlayer")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"Transition"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_svas5"]
+_data = {
+"RESET": SubResource("Animation_lgmxp"),
+"splash_animation": SubResource("Animation_6xjl2")
+}
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7h7pp"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_5btf8"]
+
+[node name="splash" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+root_node = NodePath("../..")
+autoplay = "splash_animation"
+reset_on_save = false
+libraries = {
+"": SubResource("AnimationLibrary_svas5")
+}
+script = ExtResource("1_8lfu1")
+scene = ExtResource("2_mvmr1")
+
+[node name="Paper" type="TextureRect" parent="CanvasLayer"]
+clip_contents = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2213.0
+offset_top = -1425.0
+offset_right = 12571.0
+offset_bottom = 8663.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.3, 0.3)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("1_a57qw")
+stretch_mode = 3
+
+[node name="Skeejy" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -496.0
+offset_top = -370.0
+offset_right = 1979.0
+offset_bottom = 2105.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.2, 0.2)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_cguct")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Bubble 1" type="TextureRect" parent="CanvasLayer"]
+material = SubResource("CanvasItemMaterial_7h7pp")
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -649.0
+offset_top = -333.0
+offset_right = -393.0
+offset_bottom = -77.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_roxre")
+
+[node name="Bubble 2" type="TextureRect" parent="CanvasLayer"]
+material = SubResource("CanvasItemMaterial_5btf8")
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -566.0
+offset_top = -260.0
+offset_right = -310.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_n73v8")
+
+[node name="Bubble 3" type="TextureRect" parent="CanvasLayer"]
+material = SubResource("CanvasItemMaterial_5btf8")
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -493.0
+offset_top = -220.0
+offset_right = -237.0
+offset_bottom = 36.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("5_npnqo")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
