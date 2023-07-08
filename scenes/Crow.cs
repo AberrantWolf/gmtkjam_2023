@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -50,6 +51,7 @@ public partial class Crow : Area2D
     {
         this.allCrows = Crows;
         var rng = new RandomNumberGenerator();
+		this.MonsterBase = rng.RandfRange((float)0.2, (float)1.1);
         this.AverageWeighting = rng.RandiRange(30, 100);
         this.FramesOfAddedWeight = rng.RandiRange(50, 250);
         this.randomMultiplier = new Vector2(rng.Randf(), rng.Randf());
@@ -59,6 +61,7 @@ public partial class Crow : Area2D
             this.LocalCount = this.allCrows.Count();
         }
     }
+
 
     public override void _Process(double delta)
     {
@@ -76,12 +79,12 @@ public partial class Crow : Area2D
 
         //Head towards mouse location, avoiding com, equal goal
 
-        var toMouse = (mouseLocation - this.Position).Normalized() * 2;
+        var toMouse = (mouseLocation - this.Position).Normalized() * 5;
 
         if (CurrentFramesOfAddedWeight > 0)
         {
             CurrentFramesOfAddedWeight--;
-            toMouse = (CrowHiveMind.Instance.FocusPoint - this.Position).Normalized() * 10;
+            toMouse = (CrowHiveMind.Instance.FocusPoint - this.Position).Normalized() * 100;
         }
 
         var toCOM = (centerOfMass - this.Position).Normalized();
@@ -96,9 +99,38 @@ public partial class Crow : Area2D
 
         this.lastDirection = ((lastDirection * this.AverageWeighting) + targetDirection).Normalized();
 
-        this.Position += lastDirection * ((float)delta * 500);
+        this.Position += lastDirection * ((float)delta * 300);
         this.Rotation = lastDirection.Angle();
+
+		MonsterTimer -= delta;
+		if(MonsterTimer < 0) {
+			MonsterTimer = MonsterBase;
+			Monster();
+		}
     }
+
+	private double MonsterBase = 10;
+	private double MonsterTimer = 10;
+
+	private void Monster() {
+		try {
+			var tiles = GetParent().GetNode<Tiles>("TileMap");
+			var x = (int)this.Position.X / 16;
+			var y = (int)this.Position.Y / 16;
+
+			var tile = tiles.TilesArray.Tiles[x,y];
+
+			if(tile.Type == TileTypes.Fields)
+			{
+				tiles.TilesArray.Tiles[x,y].Type = TileTypes.Empty;
+				tiles.SetCell(0, new Vector2I(x,y),0, atlasCoords: tiles.Empty);
+				//GetParent<World>().AddAdditonalCrow();
+			}
+
+		}
+		catch { }
+		Console.WriteLine("Field Monstered");
+	}
 
     private Vector2 listAverage(IEnumerable<Vector2> items)
     {

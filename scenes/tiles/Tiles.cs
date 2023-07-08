@@ -51,10 +51,10 @@ public partial class Tiles : TileMap
     private float farmhouseThreshold = 0.42f;
 
     [Export]
-    private int mapWidth = 1024;
+    private int mapWidth = 160;
 
     [Export]
-    private int mapHeight = 1024;
+    private int mapHeight = 90;
 
     [Export]
     public Vector2I Empty = new Vector2I(0, 0);
