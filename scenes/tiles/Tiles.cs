@@ -5,56 +5,56 @@ using System.Collections.Generic;
 
 public partial class Tiles : TileMap
 {
-    [Export]
-    private float mountainFrequency = 0.02f;
+	[Export]
+	private float mountainFrequency = 0.02f;
 
-    [Export]
-    private float mountainAmplitude = 1f;
+	[Export]
+	private float mountainAmplitude = 1f;
 
 	[Export]
 	private float mountainThreshold = 0.3f;
 
 	[Export]
-    private float forestFrequency = 0.02f;
+	private float forestFrequency = 0.02f;
 
-    [Export]
-    private float forestAmplitude = 1f;
+	[Export]
+	private float forestAmplitude = 1f;
 
 	[Export]
 	private float forestThreshold = 0.2f;
 
 	[Export]
-    private float waterFrequency = 0.02f;
+	private float waterFrequency = 0.02f;
 
-    [Export]
-    private float waterAmplitude = 1f;
+	[Export]
+	private float waterAmplitude = 1f;
 
 	[Export]
 	private float waterThreshold = 0.35f;
 
 	[Export]
-    private float fieldFrequency = 0.1f;
+	private float fieldFrequency = 0.1f;
 
-    [Export]
-    private float fieldAmplitude = 1f;
+	[Export]
+	private float fieldAmplitude = 1f;
 
 	[Export]
 	private float fieldThreshold = 0.2f;
 
 	[Export]
-    private float farmhouseFrequency = 0.01f;
+	private float farmhouseFrequency = 0.01f;
 
-    [Export]
-    private float farmhouseAmplitude = 1f;
+	[Export]
+	private float farmhouseAmplitude = 1f;
 
 	[Export]
 	private float farmhouseThreshold = 0.42f;
 
-    [Export]
-    private int mapWidth = 20;
+	[Export]
+	private int mapWidth = 20;
 
-    [Export]
-    private int mapHeight = 20;
+	[Export]
+	private int mapHeight = 20;
 
 	[Export]
 	public Vector2I Empty = new Vector2I(0, 0);
@@ -70,9 +70,9 @@ public partial class Tiles : TileMap
 	public Vector2I Farmhouse = new Vector2I(2, 0);
 
 	public TileArray TilesArray { get; set; }
-    public override void _EnterTree()
-    {
-        base._EnterTree();
+	public override void _EnterTree()
+	{
+		base._EnterTree();
 
 		TilesArray = new TileArray(mapWidth, mapHeight);
 
@@ -81,14 +81,14 @@ public partial class Tiles : TileMap
 		AddWater();
 		AddFields();
 		//AddFarmhouses();
-    }
+	}
 
 	private FastNoiseLite GetNoise(float frequency, float amplitude)
 	{
 		var noise = new FastNoiseLite();
-        noise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
-        noise.Frequency = frequency;
-        noise.DomainWarpAmplitude = amplitude;
+		noise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
+		noise.Frequency = frequency;
+		noise.DomainWarpAmplitude = amplitude;
 		noise.Seed = new Random().Next();
 		return noise;
 	}
@@ -97,25 +97,25 @@ public partial class Tiles : TileMap
 	{
 		var noise = GetNoise(mountainFrequency, mountainAmplitude);
 
-        for (int x = 0; x < mapWidth; x++)
-        {
-            for (int y = 0; y < mapHeight; y++)
-            {
-                var noiseVal = noise.GetNoise2D(x, y);
+		for (int x = 0; x < mapWidth; x++)
+		{
+			for (int y = 0; y < mapHeight; y++)
+			{
+				var noiseVal = noise.GetNoise2D(x, y);
 				if(noiseVal > mountainThreshold)
 				{
-                	this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Mountains);
+					this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Mountains);
 					TilesArray.Tiles[x, y].Type = TileTypes.Mountains;
 					TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
 				}
 				else
 				{
-                	this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Empty);
+					this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Empty);
 					TilesArray.Tiles[x, y].Type = TileTypes.Empty;
 					TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
 				}
-            }
-        }
+			}
+		}
 	}
 
 	private void AddForest()
@@ -187,21 +187,21 @@ public partial class Tiles : TileMap
 		}
 	}
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-        TileMap me = this;
-    }
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		TileMap me = this;
+	}
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-    {
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
 		var coords = new Vector2I(new Random().Next(0,mapWidth), new Random().Next(0,mapHeight));
 		if(this.GetCellAtlasCoords(0, coords) == Empty && this.GetSurroundingCells(coords).Any(c => this.GetCellAtlasCoords(0, c) == Fields)) 
 		{
 			this.SetCell(0, coords, sourceId: 0, atlasCoords: Fields);
 		}
-    }
+	}
 }
 
 
