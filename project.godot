@@ -27,10 +27,6 @@ window/size/viewport_width=1270
 window/size/viewport_height=720
 window/stretch/aspect="ignore"
 
-[display]
-
-window/size/mode=2
-
 [dotnet]
 
 project/assembly_name="Gmtkjam 2023"

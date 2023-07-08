@@ -59,10 +59,10 @@ offset_top = -2048.0
 texture = ExtResource("1_7o3tt")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-offset_left = -635.0
-offset_top = -360.0
-offset_right = 635.0
-offset_bottom = 360.0
+offset_left = -3840.0
+offset_top = -2160.0
+offset_right = 3840.0
+offset_bottom = 2160.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
