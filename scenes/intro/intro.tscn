@@ -35,27 +35,30 @@ anchors_preset = 0
 scale = Vector2(0.5, 0.5)
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Background"]
+layout_mode = 0
 offset_right = 2048.0
 offset_bottom = 2048.0
 texture = ExtResource("1_7o3tt")
 
 [node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Background"]
+layout_mode = 0
 offset_left = -2048.0
 offset_bottom = 2048.0
 texture = ExtResource("1_7o3tt")
 
 [node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Background"]
+layout_mode = 0
 offset_top = -2048.0
 offset_right = 2048.0
 texture = ExtResource("1_7o3tt")
 
 [node name="TextureRect4" type="TextureRect" parent="CanvasLayer/Background"]
+layout_mode = 0
 offset_left = -2048.0
 offset_top = -2048.0
 texture = ExtResource("1_7o3tt")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-anchors_preset = -1
 offset_left = -635.0
 offset_top = -360.0
 offset_right = 635.0
