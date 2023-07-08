@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c2eeum36okybg"]
+[gd_scene load_steps=29 format=3 uid="uid://d2mssdh3j62y"]
 
 [ext_resource type="Script" path="res://scenes/Crow.cs" id="1_85rju"]
 [ext_resource type="Texture2D" uid="uid://ddtih5018pwx8" path="res://assets/sprites/crow/crow01.png" id="2_wtt0h"]
