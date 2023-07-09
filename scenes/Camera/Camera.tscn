@@ -9,4 +9,10 @@
 texture = ExtResource("1_qjq6g")
 
 [node name="Camera" type="Camera2D" parent="."]
+limit_left = -4096
+limit_top = -4096
+limit_right = 4096
+limit_bottom = 4096
 script = ExtResource("2_ge1d5")
+PanThreshold = 256.0
+PanSpeed = 1024.0
