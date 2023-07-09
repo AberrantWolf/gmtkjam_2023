@@ -138,7 +138,7 @@ public partial class Crow : Area2D
 
 		this.lastDirection = ((lastDirection * this.AverageWeighting) + targetDirection).Normalized();
 
-		this.Position += lastDirection * ((float)delta * 300);
+		this.Position += lastDirection * ((float)delta * 1000);
 		this.Rotation = lastDirection.Angle();
 
 

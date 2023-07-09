@@ -1,16 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://diq4e7iyhe1j5"]
+[gd_scene load_steps=2 format=3 uid="uid://c7wgl22d6yih5"]
 
-[ext_resource type="Texture2D" uid="uid://ki27m1vgm00r" path="res://assets/images/paper.jpg" id="1_qjq6g"]
 [ext_resource type="Script" path="res://scenes/Camera/Camera.cs" id="2_ge1d5"]
 
-[node name="Node2D" type="Node2D"]
-
-[node name="BG" type="Sprite2D" parent="."]
-texture = ExtResource("1_qjq6g")
-
-[node name="Camera" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D"]
 script = ExtResource("2_ge1d5")
-MaxZoom = 2.0
-MinZoom = 0.25
-PanThreshold = 256.0
-PanSpeed = 1024.0
