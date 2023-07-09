@@ -37,7 +37,7 @@ public partial class Farmer : EnemyEntity
 				//GetNode<Area2D>("Bullet").Hide();
 			}, 2, delta, this.Name + "reload");
 			var bullet = GetNode<Area2D>("Bullet");
-			bullet.Position = new Vector2(bullet.Position.X + ShotVector.X, bullet.Position.Y + ShotVector.Y);
+			bullet.Position = new Vector2(bullet.Position.X - ShotVector.X, bullet.Position.Y - ShotVector.Y);
 		}
 	}
 
@@ -48,7 +48,7 @@ public partial class Farmer : EnemyEntity
 		var vectorToClosestCrow = (this.Position - closestCrow.Position);
 		if(vectorToClosestCrow.Length() < 500) {
 			var bullet = GetNode<Area2D>("Bullet");
-			bullet.Position = this.GlobalPosition;
+			bullet.Position = this.GlobalPosition * (float)0.5;
 			bullet.Show();
 			GetNode<AudioStreamPlayer2D>("Sounds/shotgun").Play();
 			ShotFired = true;
