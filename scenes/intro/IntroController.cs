@@ -18,16 +18,16 @@ public partial class IntroController : Node
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
-    base._Ready();
-    world = GetNode<World>(_world);
-    tileManager = GetNode<Tiles>(_tileManager);
+	base._Ready();
+	world = GetNode<World>(_world);
+	tileManager = GetNode<Tiles>(_tileManager);
 
-    tileManager.SetTiles(new Vector2I(24, 24), new Vector2I(40, 40), TileTypes.Empty);
-    tileManager.SetTile(new Vector2I(32, 32), TileTypes.Forest);
-    tileManager.SetTile(new Vector2I(32, 32) + new Vector2I(3, 0), TileTypes.Fields);
-    tileManager.SetTile(new Vector2I(32, 32) + new Vector2I(3, 1), TileTypes.Fields);
-    tileManager.SetTile(new Vector2I(32, 32) + new Vector2I(4, 0), TileTypes.Fields);
-    tileManager.SetTile(new Vector2I(32, 32) + new Vector2I(4, 1), TileTypes.Farmhouse);
+	tileManager.SetTiles(new Vector2I(24, 24), new Vector2I(40, 40), TileTypes.Empty);
+	tileManager.SetTile(new Vector2I(32, 32), TileTypes.Forest);
+	tileManager.SetTile(new Vector2I(32, 32) + new Vector2I(3, 0), TileTypes.Fields);
+	tileManager.SetTile(new Vector2I(32, 32) + new Vector2I(3, 1), TileTypes.Fields);
+	tileManager.SetTile(new Vector2I(32, 32) + new Vector2I(4, 0), TileTypes.Fields);
+	tileManager.SetTile(new Vector2I(32, 32) + new Vector2I(4, 1), TileTypes.Farmhouse);
 
   }
 
@@ -38,11 +38,11 @@ public partial class IntroController : Node
 
   public void AddCrow()
   {
-    world.AddAdditonalCrow();
+	world.AddAdditonalCrow();
   }
 
   public void StartGame()
   {
-    GetTree().ChangeSceneToPacked(scene);
+	GetTree().ChangeSceneToPacked(scene);
   }
 }

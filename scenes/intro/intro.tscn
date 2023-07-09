@@ -497,9 +497,11 @@ texture = SubResource("AtlasTexture_duual")
 
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("5_3rt5e")
+IsTutorial = true
 
 [node name="TileMap" parent="World" instance=ExtResource("2_v6tbt")]
 layer_0/tile_data = PackedInt32Array()
+IsTutorial = true
 
 [node name="CrowHiveMind" type="Node" parent="." node_paths=PackedStringArray("_mainCam")]
 script = ExtResource("5_bc3b8")

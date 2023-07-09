@@ -84,6 +84,10 @@ public partial class Tiles : TileMap
   public List<TileMapPattern> MountainPatterns;
 
   public TileArray TilesArray { get; set; }
+
+
+  [Export]
+  public bool IsTutorial { get; set; } = false;
   public override void _EnterTree()
   {
     base._EnterTree();
@@ -193,7 +197,7 @@ public partial class Tiles : TileMap
           {
             toPaintFarmhouse.Add(new Vector2I(x, y));
             currentCell.ConvertTo(TileTypes.Farmhouse);
-            if (Helpers.SpawnChance(0.1))
+            if (!IsTutorial && Helpers.SpawnChance(0.1))
             {
               var mob = farmerScene.Instantiate() as Farmer;
               mob.GlobalPosition = new Vector2(x * 128, y * 128);
@@ -204,7 +208,7 @@ public partial class Tiles : TileMap
           {
             toPaintFields.Add(new Vector2I(x, y));
             currentCell.ConvertTo(TileTypes.Fields);
-            if (Helpers.SpawnChance(0.01))
+            if (!IsTutorial && Helpers.SpawnChance(0.01))
             {
               var mob = scareCrowScene.Instantiate() as ScareCrow;
               mob.GlobalPosition = new Vector2(x * 128, y * 128);
