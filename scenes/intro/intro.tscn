@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dtw3l2qh2mtkf"]
+[gd_scene load_steps=24 format=3 uid="uid://dtw3l2qh2mtkf"]
 
 [ext_resource type="Texture2D" uid="uid://chipvn3oikmlr" path="res://assets/images/paper-tile.jpg" id="1_7o3tt"]
 [ext_resource type="PackedScene" uid="uid://c7wgl22d6yih5" path="res://scenes/Camera/Camera.tscn" id="1_po81o"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://code/CrowHiveMind.cs" id="5_bc3b8"]
 [ext_resource type="Texture2D" uid="uid://gg67jq14h62w" path="res://assets/images/tutorial-sprite-sheet.png" id="5_opv7n"]
 [ext_resource type="Script" path="res://scenes/intro/IntroController.cs" id="5_pex8d"]
+[ext_resource type="PackedScene" uid="uid://bwgebw0yuuqof" path="res://scenes/game.tscn" id="9_rglkj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_duual"]
 atlas = ExtResource("4_kwpdl")
@@ -27,7 +28,7 @@ region = Rect2(128, 128, 128, 128)
 
 [sub_resource type="Animation" id="Animation_l4mot"]
 resource_name = "intro"
-length = 10.0
+length = 20.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -47,14 +48,17 @@ tracks/1/path = NodePath("../IntroController")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(2, 2.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(2, 2.5, 20),
+"transitions": PackedFloat32Array(1, 1, 1),
 "values": [{
 "args": [],
 "method": &"AddCrow"
 }, {
 "args": [],
 "method": &"AddCrow"
+}, {
+"args": [],
+"method": &"StartGame"
 }]
 }
 tracks/2/type = "value"
@@ -175,9 +179,13 @@ _data = {
 [node name="Intro" type="Node2D"]
 
 [node name="Camera" parent="." instance=ExtResource("1_po81o")]
-position = Vector2(64, 128)
+position = Vector2(4160, 4160)
 zoom = Vector2(2, 2)
-ZoomTarget = Vector2(1, 1)
+LimLeft = 0.0
+LimTop = 0.0
+LimRight = 8192.0
+LimBot = 8192.0
+ZoomTarget = Vector2(2, 2)
 ControlLock = true
 
 [node name="UI" type="CanvasLayer" parent="."]
@@ -185,22 +193,17 @@ follow_viewport_enabled = true
 
 [node name="Fade in" type="ColorRect" parent="UI"]
 modulate = Color(1, 1, 1, 0)
-offset_left = -4432.0
-offset_top = -1912.0
-offset_right = 3248.0
-offset_bottom = 2408.0
+offset_right = 8192.0
+offset_bottom = 8192.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color(0, 0, 0, 0)
+color = Color(0, 0, 0, 1)
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = -4096.0
-offset_top = -4096.0
-offset_right = -4056.0
-offset_bottom = -4056.0
-metadata/_edit_lock_ = true
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="Background"]
 layout_mode = 1
@@ -426,10 +429,6 @@ texture = ExtResource("1_7o3tt")
 metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
 
-[node name="TileMap" parent="." instance=ExtResource("2_v6tbt")]
-layer_0/tile_data = PackedInt32Array()
-SpawnBads = false
-
 [node name="Tutorial UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -439,7 +438,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MouseRoot" type="Node2D" parent="Tutorial UI"]
-position = Vector2(64, 193)
+position = Vector2(4160, 4266)
 
 [node name="Mouse" type="Node2D" parent="Tutorial UI/MouseRoot"]
 modulate = Color(0.298039, 0.317647, 0.337255, 0)
@@ -464,6 +463,7 @@ scale = Vector2(0.496094, 0.496094)
 texture = SubResource("AtlasTexture_c35o0")
 
 [node name="TargetRoot" type="Node2D" parent="Tutorial UI"]
+position = Vector2(4652, 4160)
 
 [node name="Target" type="Node2D" parent="Tutorial UI/TargetRoot"]
 modulate = Color(1, 1, 1, 0)
@@ -498,6 +498,10 @@ texture = SubResource("AtlasTexture_duual")
 script = ExtResource("5_3rt5e")
 IsTutorial = true
 
+[node name="TileMap" parent="World" instance=ExtResource("2_v6tbt")]
+layer_0/tile_data = PackedInt32Array()
+SpawnBads = false
+
 [node name="CrowHiveMind" type="Node" parent="." node_paths=PackedStringArray("_mainCam")]
 script = ExtResource("5_bc3b8")
 _mainCam = NodePath("../Camera")
@@ -505,7 +509,8 @@ _mainCam = NodePath("../Camera")
 [node name="IntroController" type="Node" parent="."]
 script = ExtResource("5_pex8d")
 _world = NodePath("../World")
-_tileManager = NodePath("../TileMap")
+_tileManager = NodePath("../World/TileMap")
+scene = ExtResource("9_rglkj")
 
 [node name="Animations" type="Node" parent="."]
 

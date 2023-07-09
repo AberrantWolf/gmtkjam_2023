@@ -251,26 +251,21 @@ public partial class Tiles : TileMap
 
   public void SetTile(Vector2I coord, TileTypes type)
   {
-    SetTiles(coord, coord + Vector2I.One, type);
+    SetTiles(coord, Vector2I.One, type);
   }
 
-  // @mika work on this thing too
   public void SetTiles(Vector2I topLeft, Vector2I botRight, TileTypes type)
   {
-    List<Vector2I> tileList = new List<Vector2I>();
-
     if (type == TileTypes.Mountains)
     {
       throw new NotImplementedException("Cant Square Select mountains in...");
     }
 
+
     var toPaintEmpty = Enumerable.Range(topLeft.X, botRight.X).Select(x =>
     {
       return Enumerable.Range(topLeft.Y, botRight.Y).Select(y =>
       {
-
-        GD.Print(x + " " + y + " : " + TilesArray.Tiles.GetLength(0) + " " + TilesArray.Tiles.GetLength(1));
-
         TilesArray.Tiles[x, y].ConvertTo(type);
 
         return new Vector2I(x, y);
@@ -279,7 +274,24 @@ public partial class Tiles : TileMap
 
     var arr = new Godot.Collections.Array<Vector2I>(toPaintEmpty.SelectMany(x => x).AsEnumerable());
 
-    SetCellsTerrainConnect(0, arr, 0, (int)TerrainTypes.Empty);
+    int terrainType = 4;
+    switch (type)
+    {
+      case TileTypes.Forest:
+        terrainType = 2;
+        break;
+      case TileTypes.Water:
+        terrainType = 0;
+        break;
+      case TileTypes.Fields:
+        terrainType = 1;
+        break;
+      case TileTypes.Farmhouse:
+        terrainType = 3;
+        break;
+    }
+
+    SetCellsTerrainConnect(0, arr, 0, terrainType);
   }
 }
 
