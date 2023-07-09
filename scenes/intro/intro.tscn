@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://dtw3l2qh2mtkf"]
+[gd_scene load_steps=15 format=3 uid="uid://dtw3l2qh2mtkf"]
 
 [ext_resource type="Texture2D" uid="uid://chipvn3oikmlr" path="res://assets/images/paper-tile.jpg" id="1_7o3tt"]
+[ext_resource type="PackedScene" uid="uid://c7wgl22d6yih5" path="res://scenes/Camera/Camera.tscn" id="1_po81o"]
 [ext_resource type="PackedScene" uid="uid://db5nqj7gpkm0m" path="res://scenes/tiles/Tiles.tscn" id="2_v6tbt"]
 [ext_resource type="Texture2D" uid="uid://db7b7v3trq1vp" path="res://assets/images/tile-sprites.png" id="3_b5omc"]
 [ext_resource type="Script" path="res://scenes/World.cs" id="5_3rt5e"]
@@ -1104,34 +1105,22 @@ length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Camera2D:zoom")
-tracks/0/interp = 2
+tracks/0/path = NodePath("UI/Fade in:color")
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(0.5, 0.5),
-"update": 0,
-"values": [Vector2(2.2, 2.2), Vector2(0.5, 0.5)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("UI/Fade in:color")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
 }
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("IntroController")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("IntroController")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(2.5, 3),
 "transitions": PackedFloat32Array(1, 1),
 "values": [{
@@ -1150,8 +1139,8 @@ _data = {
 
 [node name="Intro" type="Node2D"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+[node name="Camera" parent="." instance=ExtResource("1_po81o")]
+position = Vector2(860.156, 4411.04)
 
 [node name="UI" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
@@ -1402,8 +1391,9 @@ crowCount = 0
 
 [node name="CrowHiveMind" type="Node" parent="." node_paths=PackedStringArray("_mainCam")]
 script = ExtResource("5_bc3b8")
-_mainCam = NodePath("../Camera2D")
+_mainCam = NodePath("../Camera")
 
 [node name="IntroController" type="Node" parent="."]
 script = ExtResource("5_pex8d")
 _world = NodePath("../World")
+_tileManager = NodePath("../TileMap")
