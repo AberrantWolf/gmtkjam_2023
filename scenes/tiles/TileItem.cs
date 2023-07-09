@@ -124,7 +124,7 @@ public class TileItem
 			case TileTypes.Empty:
 				this.canSpread = false;
 				this.CanGrow = true;
-				this.CanBeAttacked = true;
+				this.CanBeAttacked = false;
 				this.Health = 100;
 				this.MaxHealth = 100;
 				break;
