@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dtw3l2qh2mtkf"]
+[gd_scene load_steps=26 format=3 uid="uid://dtw3l2qh2mtkf"]
 
 [ext_resource type="Texture2D" uid="uid://chipvn3oikmlr" path="res://assets/images/paper-tile.jpg" id="1_7o3tt"]
 [ext_resource type="PackedScene" uid="uid://c7wgl22d6yih5" path="res://scenes/Camera/Camera.tscn" id="1_po81o"]
@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://gg67jq14h62w" path="res://assets/images/tutorial-sprite-sheet.png" id="5_opv7n"]
 [ext_resource type="Script" path="res://scenes/intro/IntroController.cs" id="5_pex8d"]
 [ext_resource type="PackedScene" uid="uid://bwgebw0yuuqof" path="res://scenes/game.tscn" id="9_rglkj"]
+[ext_resource type="PackedScene" uid="uid://dgcrqmfag3m6x" path="res://scenes/Fade/FadeIn.tscn" id="10_hwed4"]
+[ext_resource type="PackedScene" uid="uid://cvr1grluvd15t" path="res://scenes/Fade/FadeOut.tscn" id="11_a4nns"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_duual"]
 atlas = ExtResource("4_kwpdl")
@@ -29,49 +31,48 @@ region = Rect2(128, 128, 128, 128)
 [sub_resource type="Animation" id="Animation_l4mot"]
 resource_name = "intro"
 length = 20.0
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../UI/Fade in:color")
+tracks/0/path = NodePath("../IntroController")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(2, 2.5),
 "transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../IntroController")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(2, 2.5, 20),
-"transitions": PackedFloat32Array(1, 1, 1),
 "values": [{
 "args": [],
 "method": &"AddCrow"
 }, {
 "args": [],
 "method": &"AddCrow"
-}, {
-"args": [],
-"method": &"StartGame"
 }]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("../Camera:ZoomTarget")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Camera:ZoomTarget")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0, 2, 6, 7),
 "transitions": PackedFloat32Array(1, 1, 1, 0.5),
 "update": 0,
 "values": [Vector2(2, 2), Vector2(1.8, 1.8), Vector2(1.8, 1.8), Vector2(1, 1)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../CanvasLayer/FadeOut")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(20),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [null],
+"method": &"StartNextScene"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_whvbs"]
@@ -185,19 +186,8 @@ LimLeft = 0.0
 LimTop = 0.0
 LimRight = 8192.0
 LimBot = 8192.0
-ZoomTarget = Vector2(1, 1)
+ZoomTarget = Vector2(2, 2)
 ControlLock = true
-
-[node name="UI" type="CanvasLayer" parent="."]
-follow_viewport_enabled = true
-
-[node name="Fade in" type="ColorRect" parent="UI"]
-modulate = Color(1, 1, 1, 0)
-offset_right = 8192.0
-offset_bottom = 8192.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color(0, 0, 0, 0)
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 3
@@ -549,3 +539,13 @@ libraries = {
 [node name="Scroll Fade" type="AnimationPlayer" parent="Animations"]
 
 [node name="Fade Out" type="AnimationPlayer" parent="Animations"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+scale = Vector2(10000, 10000)
+transform = Transform2D(10000, 0, 0, 10000, 0, 0)
+
+[node name="FadeIn" parent="CanvasLayer" instance=ExtResource("10_hwed4")]
+
+[node name="FadeOut" parent="CanvasLayer" instance=ExtResource("11_a4nns")]
+scene = ExtResource("9_rglkj")
