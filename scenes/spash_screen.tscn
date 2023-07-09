@@ -30,22 +30,29 @@ grow_vertical = 2
 color = Color(0.72549, 0.72549, 0.72549, 1)
 
 [node name="Play" type="TextureButton" parent="."]
-layout_mode = 0
-offset_left = 660.0
-offset_top = 397.0
-offset_right = 1172.0
-offset_bottom = 653.0
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -512.0
+offset_top = -256.0
+grow_horizontal = 0
+grow_vertical = 0
 texture_normal = ExtResource("5_o0qi0")
 texture_pressed = ExtResource("6_4jf0x")
 texture_hover = ExtResource("6_4jf0x")
 texture_focused = ExtResource("5_o0qi0")
 
 [node name="Tutorial" type="TextureButton" parent="."]
-layout_mode = 0
-offset_left = 93.0
-offset_top = 394.0
-offset_right = 605.0
-offset_bottom = 650.0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -256.0
+offset_right = 512.0
+grow_vertical = 0
 texture_normal = ExtResource("7_hiew4")
 texture_pressed = ExtResource("8_b0mhn")
 texture_hover = ExtResource("8_b0mhn")
@@ -53,15 +60,15 @@ texture_focused = ExtResource("7_hiew4")
 
 [node name="Name" type="TextureRect" parent="."]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 7.0
-offset_bottom = 331.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -2.5
+offset_right = 2.5
+offset_bottom = 329.0
 grow_horizontal = 2
 texture = ExtResource("9_bf24h")
-expand_mode = 1
+expand_mode = 3
 
 [connection signal="button_down" from="Play" to="." method="_on_play_button_down"]
 [connection signal="button_down" from="Tutorial" to="." method="_on_tutorial_button_down"]

@@ -96,7 +96,7 @@ public partial class World : Node2D
 	}
 
 	public void AddEnergy(){
-		GD.Print("monch");
+//		GD.Print("monch");
 		this.energy += 3;
 	}
 	

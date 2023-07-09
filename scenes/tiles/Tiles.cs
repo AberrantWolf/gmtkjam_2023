@@ -46,7 +46,7 @@ public partial class Tiles : TileMap
 	private float fieldAmplitude = 1f;
 
 	[Export]
-	private float fieldThreshold = 0.2f;
+	private float fieldThreshold = 0.15f;
 
 	[Export]
 	private float farmhouseFrequency = 0.01f;

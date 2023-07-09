@@ -44,6 +44,7 @@ mapHeight = 256
 [node name="MainCam" type="Camera2D" parent="."]
 anchor_mode = 0
 script = ExtResource("6_y3cc6")
+LimTop = -2048.0
 
 [node name="soundtrack" type="AudioStreamPlayer" parent="MainCam"]
 stream = ExtResource("4_04mms")
