@@ -27,14 +27,17 @@ public partial class Camera : Camera2D
   [Export]
   public float LimBot = 4096f;
 
-  public Vector2 zoomTarget { get; set; }
+  [Export]
+  public Vector2 ZoomTarget { get; set; }
 
-  public bool controlLock { get; set; }
+  [Export]
+  public bool ControlLock { get; set; } = false;
 
   public override void _Ready()
   {
     base._Ready();
-    zoomTarget = Zoom;
+    ZoomTarget = Zoom;
+
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,7 +46,7 @@ public partial class Camera : Camera2D
 
     Vector2 pan = Vector2.Zero;
 
-    if (!controlLock)
+    if (!ControlLock)
     {
       var rect = GetViewport().GetVisibleRect();
       var mousePos = GetViewport().GetMousePosition();
@@ -74,25 +77,25 @@ public partial class Camera : Camera2D
     pan = Position + pan * PanSpeed * 1 / Zoom * (float)delta;
     Position = pan.Clamp(new Vector2(LimLeft, LimTop), new Vector2(LimRight, LimBot));
 
-    Zoom = Zoom.Lerp(zoomTarget, 0.2f);
+    Zoom = Zoom.Lerp(ZoomTarget, 0.2f);
   }
 
   static MouseButton[] scroll = new MouseButton[] { MouseButton.WheelDown, MouseButton.WheelUp };
 
   public override void _Input(InputEvent @event)
   {
-    if (controlLock) return;
+    if (ControlLock) return;
     if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed)
     {
       if (mouseButton.ButtonIndex == MouseButton.WheelDown)
       {
-        zoomTarget /= ZoomSpeed;
+        ZoomTarget /= ZoomSpeed;
       }
       else if (mouseButton.ButtonIndex == MouseButton.WheelUp)
       {
-        zoomTarget *= ZoomSpeed;
+        ZoomTarget *= ZoomSpeed;
       }
     }
-    zoomTarget = zoomTarget.Clamp(MinZoom * Vector2.One, MaxZoom * Vector2.One);
+    ZoomTarget = ZoomTarget.Clamp(MinZoom * Vector2.One, MaxZoom * Vector2.One);
   }
 }
