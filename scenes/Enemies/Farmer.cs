@@ -9,7 +9,7 @@ public partial class Farmer : EnemyEntity
 
 	private Sprite2D Light;
 	private List<Crow> Crows;
-
+	private bool ouch_playing = false;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -50,7 +50,7 @@ public partial class Farmer : EnemyEntity
 			var bullet = GetNode<Area2D>("Bullet");
 			bullet.Position = this.GlobalPosition * (float)0.5;
 			bullet.Show();
-			GetNode<AudioStreamPlayer2D>("Sounds/shotgun").Play();
+			GetNode<AudioStreamPlayer>("Sounds/shotgun").Play();
 			ShotFired = true;
 		}
 		this.ShotVector = vectorToClosestCrow.Normalized();
@@ -62,12 +62,21 @@ public partial class Farmer : EnemyEntity
 		animatedSprite2D.Hide();
 		this.Light.Hide();
 		var rng = new RandomNumberGenerator();
-		var sound = GetNode<AudioStreamPlayer2D>($"Sounds/dead{rng.RandiRange(1,3)}");
+		var sound = GetNode<AudioStreamPlayer>($"Sounds/dead{rng.RandiRange(1,3)}");
 		sound.Play();
 	}
 	public void _on_area_entered(Crow crow)
 	{
 		this.TakeHit();
+		
+		if(!ouch_playing){
+			var rng = new RandomNumberGenerator();
+			var sound = GetNode<AudioStreamPlayer>($"Sounds/ouch{rng.RandiRange(1,3)}");
+			
+			sound.PitchScale = 1 + rng.RandfRange((float)-0.3,(float)0.1);
+			sound.Play();
+			ouch_playing = true;
+		}
 	}
 	
 	private void _on_dead_1_finished()
@@ -86,7 +95,14 @@ public partial class Farmer : EnemyEntity
 	{
 		this.QueueFree();
 	}
+	private void _on_ouch_finished()
+	{
+		ouch_playing = false;
+	}
 }
+
+
+
 
 
 

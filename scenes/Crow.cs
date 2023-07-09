@@ -165,7 +165,7 @@ public partial class Crow : Area2D
 					Console.WriteLine("Field Monstered");
 					var sound = GetNode<AudioStreamPlayer2D>("Monch");
 					var rng = new RandomNumberGenerator();
-					sound.PitchScale += rng.RandfRange((float)-0.5,(float)0.5);
+					sound.PitchScale = 1 + rng.RandfRange((float)-0.5,(float)0.5);
 					sound.Play();
 				}
 			}
