@@ -42,7 +42,9 @@ public partial class Crow : Area2D
 	private int CurrentFramesOfAddedWeight = 0;
 	private int LocalCount = 0;
 	private double monsterFrequency = 0.0;
-
+	
+	private World world;
+	
 	public void Die()
 	{
 		CrowHiveMind.Instance.AllCrows.Remove(this);

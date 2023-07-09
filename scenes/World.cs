@@ -4,17 +4,15 @@ using System.Linq;
 
 public partial class World : Node2D
 {
-    [Export]
-    private string groupName = "crows";
+	[Export]
+	private string groupName = "crows";
 
-    [Export]
-    public int crowCount = 3;
-
-    [Export]
-    private PackedScene crowScene = ResourceLoader.Load<PackedScene>("res://scenes/Crow.tscn");
+	[Export]
+	public int crowCount = 3;
 
 	[Export]
 	private PackedScene crowScene = ResourceLoader.Load<PackedScene>("res://scenes/Crow.tscn");
+
 	private double time_expired = 0.0;
 	public double energy = 10;
 	private int min_energy = 10;
@@ -24,13 +22,12 @@ public partial class World : Node2D
 	public override void _EnterTree()
 	{
 		base._EnterTree();
-		AddCrows();
+		AddAdditonalCrow();
+		AddAdditonalCrow();
+		AddAdditonalCrow();
 	}
 
-	public override void _Ready()
-	{
-		base._Ready();
-	}
+
 	
 	public override void _Process(double delta)
 	{
@@ -49,53 +46,53 @@ public partial class World : Node2D
 		this.energy -= crowCount * energy_usage * delta;
 	}
 
-    public override void _Ready()
-    {
-        base._Ready();
-    }
+	public override void _Ready()
+	{
+		base._Ready();
+	}
 
-    public override void _Input(InputEvent @event)
-    {
-        if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Right)
-        {
-            this.AddAdditonalCrow();
-        }
-        else if (@event is InputEventKey eventKey && eventKey.Keycode == Key.Delete && eventKey.Pressed)
-        {
-            this.UnceremoniouslyMonsterAHelplessCrow();
-        }
-    }
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Right)
+		{
+			this.AddAdditonalCrow();
+		}
+		else if (@event is InputEventKey eventKey && eventKey.Keycode == Key.Delete && eventKey.Pressed)
+		{
+			this.UnceremoniouslyMonsterAHelplessCrow();
+		}
+	}
 
-    public void AddAdditonalCrow()
-    {
-        var random = new Random();
-        var screenSize = GetViewportRect().Size;
-        var rng = new RandomNumberGenerator();
-        this.crowCount++;
-        var crow = crowScene.Instantiate() as Crow;
-        crow.Name = $"Crow{this.crowCount}-{rng.RandiRange(0, 1000)}";
-        crow.GlobalPosition = new Vector2(rng.RandfRange(0, screenSize.X), rng.RandfRange(0, screenSize.Y));
-        var direction = (random.NextDouble() * (Math.PI * 2)) - Math.PI;
-        crow.GlobalRotation = (float)direction;
-        crow.AddToGroup(groupName);
-        AddChild(crow);
+	public void AddAdditonalCrow()
+	{
+		var random = new Random();
+		var screenSize = GetViewportRect().Size;
+		var rng = new RandomNumberGenerator();
+		this.crowCount++;
+		var crow = crowScene.Instantiate() as Crow;
+		crow.Name = $"Crow{this.crowCount}-{rng.RandiRange(0, 1000)}";
+		crow.GlobalPosition = new Vector2(rng.RandfRange(0, screenSize.X), rng.RandfRange(0, screenSize.Y));
+		var direction = (random.NextDouble() * (Math.PI * 2)) - Math.PI;
+		crow.GlobalRotation = (float)direction;
+		crow.AddToGroup(groupName);
+		AddChild(crow);
 
-        var crows = GetTree().GetNodesInGroup(groupName).Select(x => x as Crow);
-        crows.All(x =>
-        {
-            x.updateWeightings(crows);
-            return true;
-        });
-    }
+		var crows = GetTree().GetNodesInGroup(groupName).Select(x => x as Crow);
+		crows.All(x =>
+		{
+			x.updateWeightings(crows);
+			return true;
+		});
+	}
 
-    public void UnceremoniouslyMonsterAHelplessCrow()
-        var crows = CrowHiveMind.Instance.AllCrows;
-    {
-        crowCount--;
-        helplessCrowToBeMurdered.Die();
-        RemoveChild(helplessCrowToBeMurdered);
-        var helplessCrowToBeMurdered = crows.FirstOrDefault();
-    }
+	public void UnceremoniouslyMonsterAHelplessCrow()
+	{
+		var crows = CrowHiveMind.Instance.AllCrows;
+		var helplessCrowToBeMurdered = crows.FirstOrDefault();
+		crowCount--;
+		helplessCrowToBeMurdered.Die();
+		RemoveChild(helplessCrowToBeMurdered);
+	}
 
 	public void AddEnergy(){
 //		GD.Print("monch");
