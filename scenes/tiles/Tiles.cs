@@ -5,6 +5,13 @@ using System.Collections.Generic;
 
 public partial class Tiles : TileMap
 {
+
+	[Export]
+	private PackedScene scareCrowScene = ResourceLoader.Load<PackedScene>("res://scenes/Enemies/ScareCrow.tscn");
+	
+	[Export]
+	private PackedScene farmerScene = ResourceLoader.Load<PackedScene>("res://scenes/Enemies/Farmer.tscn");
+
 	[Export]
 	private float mountainFrequency = 0.02f;
 
@@ -175,13 +182,26 @@ public partial class Tiles : TileMap
 						this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Farmhouse);
 						TilesArray.Tiles[x, y].Type = TileTypes.Farmhouse;
 						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
+						
+						if(Helpers.SpawnChance(0.1)) {
+							var mob = farmerScene.Instantiate() as Farmer;
+							mob.GlobalPosition = new Vector2(x*16,y*16);
+							AddChild(mob);
+						}
 					}
 					else
 					{
 						this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Fields);
 						TilesArray.Tiles[x, y].Type = TileTypes.Fields;
 						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
+						
+						if(Helpers.SpawnChance(0.01)) {
+							var mob = scareCrowScene.Instantiate() as ScareCrow;
+							mob.GlobalPosition = new Vector2(x*16,y*16);
+							AddChild(mob);
+						}
 					}
+					
 				}
 			}
 		}

@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using Godot;
 
 public class Helpers
 {
+	private static RandomNumberGenerator rng = new RandomNumberGenerator();
+
 	private class CallQuery
 	{
 		public System.Action Method;
@@ -32,5 +35,9 @@ public class Helpers
 				item.Method();
 			}
 		}
+	}
+
+	public static bool SpawnChance(double chance) {
+		return chance > rng.RandfRange(0,1);
 	}
 }
