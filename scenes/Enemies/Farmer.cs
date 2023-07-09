@@ -23,7 +23,12 @@ public partial class Farmer : EnemyEntity
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		var ClosestCrow = CrowHiveMind.Instance.AllCrows.OrderBy(x => x.Position.DistanceTo(this.Position)).FirstOrDefault();
+		var ClosestCrow = CrowHiveMind.Instance.AllCrows.MinBy(x => x.Position.DistanceTo(this.Position));
+		if (ClosestCrow == null)
+		{
+			return;
+		}
+		
 		var directionToClosestCrow = (this.Position - ClosestCrow.Position).Normalized();
 		directionToClosestCrow = directionToClosestCrow.Rotated((float)-1.55);
 		this.Light.Rotation = directionToClosestCrow.Angle();
