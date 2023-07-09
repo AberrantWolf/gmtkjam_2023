@@ -31,29 +31,35 @@ public partial class Crow : Area2D
 	[Export]
 	public GpuParticles2D[] StartParticles;
 
+	[Export]
+	public PackedScene DestructionFx;
+
 	private Vector2 lastDirection { get; set; } = Vector2.Right;
 
 	private IEnumerable<Crow> allCrows = null;
 	private Vector2 randomMultiplier { get; set; } = Vector2.Right;
 	private int AverageWeighting = 500;
-	private int FramesOfAddedWeight = 0;
 	private int CurrentFramesOfAddedWeight = 0;
 	private int LocalCount = 0;
 	private double monsterFrequency = 0.0;
-
-	public override void _Input(InputEvent @event)
+	
+	private World world;
+	
+	public void Die()
 	{
-		if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Left)
-		{
-			CurrentFramesOfAddedWeight = this.FramesOfAddedWeight;
-		}
-	}
-
-	public override void _ExitTree()
-	{
-		base._ExitTree();
-
 		CrowHiveMind.Instance.AllCrows.Remove(this);
+
+		var destFx = DestructionFx.Instantiate();
+		GetParent().AddChild(destFx);
+
+		var featherFx = destFx as GpuParticles2D;
+		featherFx.Emitting = true;
+
+		destFx.GetNode<GpuParticles2D>("Shockwave").Emitting = true;
+
+		featherFx.Position = Position;
+
+		QueueFree();
 	}
 
 	float scarfChance = 0.05f;
@@ -90,7 +96,6 @@ public partial class Crow : Area2D
 		var rng = new RandomNumberGenerator();
 		this.monsterFrequency = rng.RandfRange((float)0.2, (float)1.1);
 		this.AverageWeighting = rng.RandiRange(30, 100);
-		this.FramesOfAddedWeight = rng.RandiRange(50, 250);
 		this.randomMultiplier = new Vector2(rng.Randf(), rng.Randf());
 		this.LocalCount = this.allCrows.Count() / 10;
 		if (this.LocalCount == 0)
@@ -118,10 +123,9 @@ public partial class Crow : Area2D
 
 		var toMouse = (mouseLocation - this.Position).Normalized() * 5;
 
-		if (CurrentFramesOfAddedWeight > 0)
+		if (CrowHiveMind.Instance.ShouldMonster)
 		{
-			CurrentFramesOfAddedWeight--;
-			toMouse = (CrowHiveMind.Instance.FocusPoint - this.Position).Normalized() * 100;
+			toMouse *= 100;
 		}
 
 		var toCOM = (centerOfMass - this.Position).Normalized();
@@ -136,7 +140,7 @@ public partial class Crow : Area2D
 
 		this.lastDirection = ((lastDirection * this.AverageWeighting) + targetDirection).Normalized();
 
-		this.Position += lastDirection * ((float)delta * 300);
+		this.Position += lastDirection * ((float)delta * 1000);
 		this.Rotation = lastDirection.Angle();
 
 
@@ -156,20 +160,27 @@ public partial class Crow : Area2D
 			var xlen = tilesArray.GetLength(0);
 			var ylen = tilesArray.GetLength(1);
 
-			if(xlen > x && x > 0 && ylen > y && y > 0) 
+			if (xlen > x && x > 0 && ylen > y && y > 0)
 			{
 				var tile = tiles.TilesArray.Tiles[x, y];
 
-				if(tile.CanBeAttacked) {
+				if (tile.CanBeAttacked)
+				{
 					tile.Attack(1);
-					var sound = GetNode<AudioStreamPlayer2D>("Monch");
+					var sound = GetNode<AudioStreamPlayer>("Monch");
 					var rng = new RandomNumberGenerator();
-					sound.PitchScale = 1 + rng.RandfRange((float)-0.5,(float)0.5);
+					sound.PitchScale = 1 + rng.RandfRange((float)-0.5, (float)0.5);
 					sound.Play();
+					
+					world.AddEnergy();
 				}
 			}
 		}
 		catch { }
+	}
+	
+	public void SetParent(World world){
+		this.world = world;
 	}
 
 	private Vector2 listAverage(IEnumerable<Vector2> items)

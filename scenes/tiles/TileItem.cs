@@ -7,7 +7,7 @@ public class TileItem
 {
 	public TileArray parent { get; private set; }
 	public Vector2I Coords { get; private set; }
-	public Vector2I[] StateArray { get; private set; }
+	public int StateArray { get; private set; }
 	public int Health { get; private set; } = 1;
 	public int MaxHealth { get; private set; }
 	public bool CanBeAttacked { get; private set; }
@@ -30,7 +30,7 @@ public class TileItem
 	public TileItem(
 	  TileArray parent,
 	  Vector2I coords,
-	  Vector2I[] stateArray = null,
+	  int stateArray = 0,
 	  int maxHealth = 0,
 	  bool canBeAttacked = false,
 	  bool canGrow = false,
@@ -72,10 +72,13 @@ public class TileItem
 	public void Attack(int dmg)
 	{
 		this.Health -= dmg;
+		//var currentAtlas = this.parent.TileMap.GetCellAtlasCoords(0, this.Coords);
 
 		switch(this.CurrentType)
 		{
 			case TileTypes.Fields:
+				//This is supposed to modulate what is being eaten
+				//this.parent.TileMap.SetCell(0, this.Coords, atlasCoords: new Vector2I(currentAtlas.X, currentAtlas.Y + 1));
 				if(this.Health <= 0) {
 					this.ConvertTo(TileTypes.Empty);
 					this.parent.TileMap.SetCellsTerrainConnect(0, new Godot.Collections.Array<Vector2I>(){ this.Coords}, 0, (int)TerrainTypes.Empty);
@@ -124,7 +127,7 @@ public class TileItem
 			case TileTypes.Empty:
 				this.canSpread = false;
 				this.CanGrow = true;
-				this.CanBeAttacked = true;
+				this.CanBeAttacked = false;
 				this.Health = 100;
 				this.MaxHealth = 100;
 				break;
@@ -132,8 +135,8 @@ public class TileItem
 				this.canSpread = true;
 				this.CanGrow = false;
 				this.CanBeAttacked = true;
-				this.Health = 10;
-				this.MaxHealth = 10;
+				this.Health = 2;
+				this.MaxHealth = 2;
 				break;
 			case TileTypes.Farmhouse:
 				this.canSpread = false;

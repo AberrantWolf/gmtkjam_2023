@@ -1,6 +1,7 @@
-[gd_scene load_steps=41 format=3 uid="uid://c2eeum36okybg"]
+[gd_scene load_steps=42 format=3 uid="uid://d2mssdh3j62y"]
 
 [ext_resource type="Script" path="res://scenes/Crow.cs" id="1_85rju"]
+[ext_resource type="PackedScene" uid="uid://s1vwdhxi3euk" path="res://scenes/CrowDespawn.tscn" id="2_redc5"]
 [ext_resource type="Texture2D" uid="uid://ddtih5018pwx8" path="res://assets/sprites/crow/crow01.png" id="2_wtt0h"]
 [ext_resource type="Texture2D" uid="uid://oqvhpfkd31nw" path="res://assets/sprites/crow/crow02.png" id="3_3o2hc"]
 [ext_resource type="Texture2D" uid="uid://bx7ibgoh5471c" path="res://assets/sprites/crow/crow03.png" id="4_65h7i"]
@@ -29,7 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://bmx32gl01br7q" path="res://assets/images/crows.png" id="27_fn0as"]
 [ext_resource type="Texture2D" uid="uid://xymcwg8j5j5n" path="res://assets/images/crow_feather.png" id="28_yxjid"]
 [ext_resource type="Texture2D" uid="uid://lhh2b3vnb33f" path="res://assets/images/shockwave.png" id="29_kcsv5"]
-[ext_resource type="AudioStream" uid="uid://darmlq26oyj1h" path="res://sounds/munch.wav" id="30_npcsw"]
+[ext_resource type="AudioStream" uid="uid://darmlq26oyj1h" path="res://sounds/munch.wav" id="31_mhpn7"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_p5gpf"]
 animations = [{
@@ -128,16 +129,16 @@ gradient = SubResource("Gradient_2xyje")
 particle_flag_disable_z = true
 spread = 180.0
 gravity = Vector3(0, 0, 0)
-initial_velocity_min = 600.0
-initial_velocity_max = 600.0
+initial_velocity_min = 1000.0
+initial_velocity_max = 4000.0
 angular_velocity_min = -720.0
 angular_velocity_max = 720.0
 orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
 angle_min = -90.0
 angle_max = 90.0
-scale_min = 0.05
-scale_max = 0.05
+scale_min = 0.2
+scale_max = 0.2
 color_ramp = SubResource("GradientTexture1D_q7ocl")
 attractor_interaction_enabled = false
 
@@ -160,13 +161,14 @@ particle_flag_disable_z = true
 direction = Vector3(-1, 0, 0)
 spread = 0.0
 gravity = Vector3(0, 0, 0)
-initial_velocity_min = 800.0
-initial_velocity_max = 800.0
+initial_velocity_min = 1200.0
+initial_velocity_max = 1200.0
 orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
-scale_min = 9.0
-scale_max = 9.0
+scale_min = 18.0
+scale_max = 18.0
 scale_curve = SubResource("CurveTexture_2sdlj")
+color = Color(0, 0, 0, 1)
 color_ramp = SubResource("GradientTexture1D_30q00")
 
 [node name="Crow" type="Area2D" node_paths=PackedStringArray("CrowSprite", "StartParticles")]
@@ -177,6 +179,7 @@ Speed = 500
 Separation = 15
 CrowSprite = NodePath("CrowSprite")
 StartParticles = [NodePath("FeatherParticles"), NodePath("FeatherParticles/Shockwave")]
+DestructionFx = ExtResource("2_redc5")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -189,7 +192,7 @@ shape = SubResource("CircleShape2D_rixm5")
 
 [node name="CrowSprite" type="Sprite2D" parent="."]
 position = Vector2(-4.76837e-07, -7.15256e-07)
-scale = Vector2(0.05, 0.05)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("27_fn0as")
 region_enabled = true
 region_rect = Rect2(0, 0, 256, 256)
@@ -216,5 +219,5 @@ lifetime = 0.4
 one_shot = true
 local_coords = true
 
-[node name="Monch" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("30_npcsw")
+[node name="Monch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("31_mhpn7")

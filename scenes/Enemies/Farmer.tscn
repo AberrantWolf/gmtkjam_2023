@@ -1,10 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://cg6rs1oc5nhrq"]
+[gd_scene load_steps=18 format=3 uid="uid://cg6rs1oc5nhrq"]
 
 [ext_resource type="Script" path="res://scenes/Enemies/Farmer.cs" id="1_s7or1"]
-[ext_resource type="Texture2D" uid="uid://g15u6ii640mp" path="res://assets/sprites/farmer/Farmer_0000_Layer-2-copy.png" id="1_yfow5"]
-[ext_resource type="Texture2D" uid="uid://nyjv3mnwquat" path="res://assets/sprites/farmer/Farmer_0001_Layer-2.png" id="2_ejvqr"]
+[ext_resource type="Texture2D" uid="uid://bv0336kof7mt2" path="res://assets/images/enemy-sprites.png" id="2_085s8"]
 [ext_resource type="Texture2D" uid="uid://b560y2egglqy3" path="res://assets/sprites/farmer/lasor.png" id="4_mp08t"]
-[ext_resource type="Texture2D" uid="uid://d4hcn45iet6vy" path="res://assets/images/bubble-1.png" id="5_4qxt7"]
 [ext_resource type="AudioStream" uid="uid://doceyuoa5k1mf" path="res://sounds/shotgun.wav" id="6_oab6n"]
 [ext_resource type="AudioStream" uid="uid://268lobd0xsyd" path="res://sounds/dead_farmer1.wav" id="7_atusk"]
 [ext_resource type="AudioStream" uid="uid://jh1jmrpie3o8" path="res://sounds/dead_farmer2.wav" id="8_5mwnk"]
@@ -16,23 +14,54 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rd5gm"]
 size = Vector2(58, 72)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibdxh"]
+atlas = ExtResource("2_085s8")
+region = Rect2(192, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0m2nt"]
+atlas = ExtResource("2_085s8")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6x556"]
+atlas = ExtResource("2_085s8")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gx8xw"]
+atlas = ExtResource("2_085s8")
+region = Rect2(128, 64, 64, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_2w1u3"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_yfow5")
+"texture": SubResource("AtlasTexture_ibdxh")
+}],
+"loop": true,
+"name": &"death",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0m2nt")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_ejvqr")
+"texture": SubResource("AtlasTexture_6x556")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx8xw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6x556")
 }],
 "loop": true,
 "name": &"default",
-"speed": 60.0
+"speed": 5.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iy3mu"]
 
 [node name="Farmer" type="Area2D"]
+scale = Vector2(2, 2)
 script = ExtResource("1_s7or1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -41,7 +70,6 @@ shape = SubResource("RectangleShape2D_rd5gm")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_2w1u3")
-frame_progress = 0.667766
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(2.08165e-12, 2.08165e-12)
@@ -54,7 +82,10 @@ offset = Vector2(2.08165e-12, -32)
 [node name="Sprite2D" type="Sprite2D" parent="Bullet"]
 position = Vector2(1.14441e-05, -1.14441e-05)
 scale = Vector2(0.0468751, 0.0468751)
-texture = ExtResource("5_4qxt7")
+texture = ExtResource("2_085s8")
+hframes = 4
+region_enabled = true
+region_rect = Rect2(0, 128, 256, 64)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bullet"]
 shape = SubResource("CircleShape2D_iy3mu")

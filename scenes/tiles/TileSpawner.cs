@@ -10,7 +10,7 @@ public class TileSpawner
 		return new TileItem(
 			parent,
 			coords,
-			null,
+			0,
 			5,
 			true,
 			true,
