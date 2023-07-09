@@ -1,13 +1,17 @@
-[gd_scene load_steps=11 format=3 uid="uid://cg6rs1oc5nhrq"]
+[gd_scene load_steps=16 format=3 uid="uid://cg6rs1oc5nhrq"]
 
 [ext_resource type="Script" path="res://scenes/Enemies/Farmer.cs" id="1_s7or1"]
 [ext_resource type="Texture2D" uid="uid://g15u6ii640mp" path="res://assets/sprites/farmer/Farmer_0000_Layer-2-copy.png" id="1_yfow5"]
 [ext_resource type="Texture2D" uid="uid://nyjv3mnwquat" path="res://assets/sprites/farmer/Farmer_0001_Layer-2.png" id="2_ejvqr"]
 [ext_resource type="Texture2D" uid="uid://b560y2egglqy3" path="res://assets/sprites/farmer/lasor.png" id="4_mp08t"]
-[ext_resource type="AudioStream" uid="uid://268lobd0xsyd" path="res://sounds/dead_farmer1.wav" id="5_oop14"]
-[ext_resource type="AudioStream" uid="uid://jh1jmrpie3o8" path="res://sounds/dead_farmer2.wav" id="6_hv588"]
-[ext_resource type="AudioStream" uid="uid://cm2yv4wkn02wm" path="res://sounds/dead_farmer3.wav" id="7_txldl"]
-[ext_resource type="AudioStream" uid="uid://doceyuoa5k1mf" path="res://sounds/shotgun.wav" id="8_u3opt"]
+[ext_resource type="Texture2D" uid="uid://d4hcn45iet6vy" path="res://assets/images/bubble-1.png" id="5_4qxt7"]
+[ext_resource type="AudioStream" uid="uid://doceyuoa5k1mf" path="res://sounds/shotgun.wav" id="6_oab6n"]
+[ext_resource type="AudioStream" uid="uid://268lobd0xsyd" path="res://sounds/dead_farmer1.wav" id="7_atusk"]
+[ext_resource type="AudioStream" uid="uid://jh1jmrpie3o8" path="res://sounds/dead_farmer2.wav" id="8_5mwnk"]
+[ext_resource type="AudioStream" uid="uid://cm2yv4wkn02wm" path="res://sounds/dead_farmer3.wav" id="9_pam37"]
+[ext_resource type="AudioStream" uid="uid://cpv1w1knopxmw" path="res://sounds/ouch1.wav" id="10_0edsa"]
+[ext_resource type="AudioStream" uid="uid://cx0l3bqryjt2" path="res://sounds/ouch2.wav" id="11_p6j8l"]
+[ext_resource type="AudioStream" uid="uid://jb7f2wyyi85j" path="res://sounds/ouch3.wav" id="12_xv7wo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rd5gm"]
 size = Vector2(58, 72)
@@ -26,6 +30,8 @@ animations = [{
 "speed": 60.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_iy3mu"]
+
 [node name="Farmer" type="Area2D"]
 script = ExtResource("1_s7or1")
 
@@ -43,22 +49,53 @@ scale = Vector2(1.64062, 1.82812)
 texture = ExtResource("4_mp08t")
 offset = Vector2(2.08165e-12, -32)
 
+[node name="Bullet" type="Area2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Bullet"]
+position = Vector2(1.14441e-05, -1.14441e-05)
+scale = Vector2(0.0468751, 0.0468751)
+texture = ExtResource("5_4qxt7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bullet"]
+shape = SubResource("CircleShape2D_iy3mu")
+
 [node name="Sounds" type="Node" parent="."]
 
-[node name="dead1" type="AudioStreamPlayer2D" parent="Sounds"]
-stream = ExtResource("5_oop14")
-volume_db = -8.0
+[node name="shotgun" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("6_oab6n")
+volume_db = -15.37
 
-[node name="dead2" type="AudioStreamPlayer2D" parent="Sounds"]
-stream = ExtResource("6_hv588")
-volume_db = -8.0
+[node name="dead1" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_atusk")
+volume_db = -2.0
 
-[node name="dead3" type="AudioStreamPlayer2D" parent="Sounds"]
-stream = ExtResource("7_txldl")
-volume_db = -8.0
+[node name="dead2" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_5mwnk")
+volume_db = -2.0
 
-[node name="shoot" type="AudioStreamPlayer2D" parent="Sounds"]
-stream = ExtResource("8_u3opt")
-volume_db = -5.0
+[node name="dead3" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("9_pam37")
+volume_db = -2.0
+
+[node name="ouch1" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("10_0edsa")
+volume_db = -8.584
+pitch_scale = 0.86
+
+[node name="ouch2" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("11_p6j8l")
+volume_db = -9.495
+pitch_scale = 0.86
+
+[node name="ouch3" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("12_xv7wo")
+volume_db = -13.124
+pitch_scale = 0.86
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="finished" from="Sounds/dead1" to="." method="_on_dead_1_finished"]
+[connection signal="finished" from="Sounds/dead2" to="." method="_on_dead_2_finished"]
+[connection signal="finished" from="Sounds/dead3" to="." method="_on_dead_3_finished"]
+[connection signal="finished" from="Sounds/ouch1" to="." method="_on_ouch_finished"]
+[connection signal="finished" from="Sounds/ouch2" to="." method="_on_ouch_finished"]
+[connection signal="finished" from="Sounds/ouch3" to="." method="_on_ouch_finished"]
