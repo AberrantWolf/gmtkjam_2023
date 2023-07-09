@@ -24,6 +24,11 @@ public partial class Farmer : EnemyEntity
 	public override void _Process(double delta)
 	{
 		var ClosestCrow = CrowHiveMind.Instance.AllCrows.OrderBy(x => x.Position.DistanceTo(this.Position)).FirstOrDefault();
+		if (ClosestCrow == null)
+		{
+			return;
+		}
+		
 		var directionToClosestCrow = (this.Position - ClosestCrow.Position).Normalized();
 		directionToClosestCrow = directionToClosestCrow.Rotated((float)-1.55);
 		this.Light.Rotation = directionToClosestCrow.Angle();
