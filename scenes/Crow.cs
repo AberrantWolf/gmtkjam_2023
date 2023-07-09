@@ -40,7 +40,8 @@ public partial class Crow : Area2D
 	private int CurrentFramesOfAddedWeight = 0;
 	private int LocalCount = 0;
 	private double monsterFrequency = 0.0;
-
+	private World world;
+	
 	public override void _Input(InputEvent @event)
 	{
 		if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Left)
@@ -162,14 +163,19 @@ public partial class Crow : Area2D
 
 				if(tile.CanBeAttacked) {
 					tile.Attack(1);
-					var sound = GetNode<AudioStreamPlayer2D>("Monch");
+					var sound = GetNode<AudioStreamPlayer>("Monch");
 					var rng = new RandomNumberGenerator();
 					sound.PitchScale = 1 + rng.RandfRange((float)-0.5,(float)0.5);
 					sound.Play();
+					world.AddEnergy();
 				}
 			}
 		}
 		catch { }
+	}
+	
+	public void SetParent(World world){
+		this.world = world;
 	}
 
 	private Vector2 listAverage(IEnumerable<Vector2> items)

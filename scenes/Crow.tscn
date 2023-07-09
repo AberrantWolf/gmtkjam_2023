@@ -216,5 +216,5 @@ lifetime = 0.4
 one_shot = true
 local_coords = true
 
-[node name="Monch" type="AudioStreamPlayer2D" parent="."]
+[node name="Monch" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("30_npcsw")
