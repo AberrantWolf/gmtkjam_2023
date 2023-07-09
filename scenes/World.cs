@@ -102,6 +102,7 @@ public partial class World : Node2D
 	
 	private void _on_button_button_down()
 	{
+		GetNode<AudioStreamPlayer>("caw").Play();
 		GetParent().GetNode<GameLoopController>("GameLoopController").Restart();
 	}
 	private void _on_death_timer_timeout()
@@ -112,7 +113,5 @@ public partial class World : Node2D
 		}
 	}
 }
-
-
 
 

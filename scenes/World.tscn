@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bad2ca6hfimqv"]
+[gd_scene load_steps=14 format=3 uid="uid://bad2ca6hfimqv"]
 
 [ext_resource type="Script" path="res://scenes/World.cs" id="1_p1gqh"]
 [ext_resource type="PackedScene" uid="uid://db5nqj7gpkm0m" path="res://scenes/tiles/Tiles.tscn" id="3_evb88"]
@@ -7,6 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://chipvn3oikmlr" path="res://assets/images/paper-tile.jpg" id="5_emrga"]
 [ext_resource type="Script" path="res://code/CrowHiveMind.cs" id="6_5opnq"]
 [ext_resource type="Script" path="res://scenes/Camera/Camera.cs" id="6_y3cc6"]
+[ext_resource type="Texture2D" uid="uid://dwcqg1kw4ep01" path="res://assets/button/restart-1.png" id="8_aoyl6"]
+[ext_resource type="Texture2D" uid="uid://dl7sqo5rdlyyg" path="res://assets/button/restart-3.png" id="9_xf7a0"]
+[ext_resource type="Texture2D" uid="uid://b5r8vi3gmuh0p" path="res://assets/button/restart-2.png" id="10_ssw0s"]
+[ext_resource type="AudioStream" uid="uid://bpfqc1efjf1br" path="res://sounds/dead_crow2.wav" id="11_35tqy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_th5aq"]
 texture = ExtResource("5_emrga")
@@ -55,7 +59,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.239216, 0.239216, 0.239216, 1)
+color = Color(0.72549, 0.72549, 0.72549, 1)
 
 [node name="Label" type="Label" parent="MainCam/GameOver"]
 anchors_preset = 8
@@ -63,30 +67,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -91.0
-offset_top = -56.0
-offset_right = 92.0
-offset_bottom = 13.0
+offset_left = -183.0
+offset_top = -106.0
+offset_right = 184.0
+offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.968627, 0.968627, 0.968627, 1)
-theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
 text = "GAME OVER"
-
-[node name="Button" type="Button" parent="MainCam/GameOver"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -37.0
-offset_top = -215.0
-offset_right = 38.0
-offset_bottom = -166.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_vertical = 8
-text = "RESTART"
+horizontal_alignment = 1
 
 [node name="timer" type="Label" parent="MainCam/GameOver"]
 anchors_preset = 8
@@ -94,16 +84,28 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -102.5
-offset_top = -11.5
-offset_right = 102.5
-offset_bottom = 11.5
+offset_left = -401.0
+offset_top = -18.0
+offset_right = 400.0
+offset_bottom = 19.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
 text = "you survived n seconds"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="MainCam/GameOver"]
+
+[node name="Button" type="TextureButton" parent="MainCam/GameOver"]
+offset_left = 501.0
+offset_top = 391.0
+offset_right = 758.0
+offset_bottom = 664.0
+texture_normal = ExtResource("8_aoyl6")
+texture_pressed = ExtResource("9_xf7a0")
+texture_hover = ExtResource("10_ssw0s")
 
 [node name="UI" type="CanvasLayer" parent="MainCam"]
 
@@ -134,5 +136,8 @@ text = "0 energy"
 [node name="DeathTimer" type="Timer" parent="."]
 autostart = true
 
-[connection signal="button_down" from="MainCam/GameOver/Button" to="." method="_on_button_button_down"]
+[node name="caw" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_35tqy")
+
+[connection signal="button_up" from="MainCam/GameOver/Button" to="." method="_on_button_button_down"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]
