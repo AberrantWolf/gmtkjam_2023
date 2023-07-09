@@ -1,0 +1,74 @@
+[gd_scene load_steps=9 format=3 uid="uid://bteqkihoelrsc"]
+
+[ext_resource type="Script" path="res://scenes/spash_screen.cs" id="1_un7w7"]
+[ext_resource type="PackedScene" uid="uid://dtw3l2qh2mtkf" path="res://scenes/intro/intro.tscn" id="2_413jl"]
+[ext_resource type="PackedScene" uid="uid://bwgebw0yuuqof" path="res://scenes/game.tscn" id="3_hg32m"]
+[ext_resource type="Texture2D" uid="uid://c2y0uogv1ci14" path="res://assets/button/play-1.png" id="5_o0qi0"]
+[ext_resource type="Texture2D" uid="uid://crjnt1p6pqrgj" path="res://assets/button/play-2.png" id="6_4jf0x"]
+[ext_resource type="Texture2D" uid="uid://b7tkuvi7ju7pn" path="res://assets/button/tutorial-1.png" id="7_hiew4"]
+[ext_resource type="Texture2D" uid="uid://b78gtye86wyl1" path="res://assets/button/tutorial-2.png" id="8_b0mhn"]
+[ext_resource type="Texture2D" uid="uid://gwn6rifhuei6" path="res://assets/button/murder.png" id="9_bf24h"]
+
+[node name="SpashScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_un7w7")
+tutorial = ExtResource("2_413jl")
+game = ExtResource("3_hg32m")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.72549, 0.72549, 0.72549, 1)
+
+[node name="Play" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -512.0
+offset_top = -256.0
+grow_horizontal = 0
+grow_vertical = 0
+texture_normal = ExtResource("5_o0qi0")
+texture_pressed = ExtResource("6_4jf0x")
+texture_hover = ExtResource("6_4jf0x")
+texture_focused = ExtResource("5_o0qi0")
+
+[node name="Tutorial" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -256.0
+offset_right = 512.0
+grow_vertical = 0
+texture_normal = ExtResource("7_hiew4")
+texture_pressed = ExtResource("8_b0mhn")
+texture_hover = ExtResource("8_b0mhn")
+texture_focused = ExtResource("7_hiew4")
+
+[node name="Name" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -2.5
+offset_right = 2.5
+offset_bottom = 329.0
+grow_horizontal = 2
+texture = ExtResource("9_bf24h")
+expand_mode = 3
+
+[connection signal="button_down" from="Play" to="." method="_on_play_button_down"]
+[connection signal="button_down" from="Tutorial" to="." method="_on_tutorial_button_down"]

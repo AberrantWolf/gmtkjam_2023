@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scenes/splash/SceneTransition.cs" id="1_8lfu1"]
 [ext_resource type="Texture2D" uid="uid://ki27m1vgm00r" path="res://assets/images/paper.jpg" id="1_a57qw"]
+[ext_resource type="PackedScene" uid="uid://bteqkihoelrsc" path="res://scenes/spash_screen.tscn" id="2_56vdw"]
 [ext_resource type="Texture2D" uid="uid://w3qw4rjbgsdt" path="res://assets/images/skeejy-no-background.png" id="2_cguct"]
-[ext_resource type="PackedScene" uid="uid://dtw3l2qh2mtkf" path="res://scenes/intro/intro.tscn" id="2_mvmr1"]
 [ext_resource type="Texture2D" uid="uid://d4hcn45iet6vy" path="res://assets/images/bubble-1.png" id="3_roxre"]
 [ext_resource type="Texture2D" uid="uid://cfi4a76cl27ki" path="res://assets/images/bubble-2.png" id="4_n73v8"]
 [ext_resource type="Texture2D" uid="uid://2l7uk8c1avbm" path="res://assets/images/bubble-3.png" id="5_npnqo"]
@@ -100,7 +100,7 @@ libraries = {
 "": SubResource("AnimationLibrary_svas5")
 }
 script = ExtResource("1_8lfu1")
-scene = ExtResource("2_mvmr1")
+scene = ExtResource("2_56vdw")
 
 [node name="Paper" type="TextureRect" parent="CanvasLayer"]
 clip_contents = true
@@ -175,7 +175,7 @@ scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_n73v8")
 
 [node name="Bubble 3" type="TextureRect" parent="CanvasLayer"]
-modulate = Color(1, 1, 1, 0.6)
+modulate = Color(1, 1, 1, 0)
 material = SubResource("CanvasItemMaterial_5btf8")
 anchors_preset = 3
 anchor_left = 1.0
@@ -199,4 +199,4 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color(0, 0, 0, 0)
+color = Color(0, 0, 0, 1)
