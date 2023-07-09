@@ -8,7 +8,7 @@ public partial class World : Node2D
 	private string groupName = "crows";
 	
 	[Export]
-	private int crowCount = 3;
+	public int crowCount = 3;
 
 	[Export]
 	private PackedScene crowScene = ResourceLoader.Load<PackedScene>("res://scenes/Crow.tscn");
@@ -61,6 +61,7 @@ public partial class World : Node2D
 	{
 		var crows = GetTree().GetNodesInGroup(groupName).Select(x=>x as Crow);
 		var helplessCrowToBeMurdered = crows.FirstOrDefault();
+		crowCount--;
 		RemoveChild(helplessCrowToBeMurdered);
 	}
 
@@ -80,4 +81,12 @@ public partial class World : Node2D
 			AddChild(crow);
 		}
 	}
+	private void _on_button_button_down()
+	{
+		var game = GetParent();
+		game.GetNode<GameLoopController>("GameLoopController").Restart();
+	}
 }
+
+
+

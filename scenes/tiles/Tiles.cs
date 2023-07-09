@@ -65,34 +65,19 @@ public partial class Tiles : TileMap
 
 	[Export]
 	public Vector2I Empty = new Vector2I(0, 0);
-	
+
 	[Export]
 	public Vector2I Mountains = new Vector2I(2, 1);
-	
+
 	[Export]
 	public Vector2I Forest = new Vector2I(0, 1);
-	
+
 	[Export]
 	public Vector2I Water = new Vector2I(1, 1);
-	
-	[Export]
-	public int EmptyTerrain = 4;
-	
-	[Export]
-	public int ForestTerrain = 2;
-	
-	[Export]
-	public int WaterTerrain = 0;
-
-	[Export]
-	public int FieldTerrain = 1;
-
-	[Export]
-	public int FarmhouseTerrain = 3;
 
 	[Export]
 	public Vector2I Fields = new Vector2I(1, 0);
-	
+
 	[Export]
 	public Vector2I Farmhouse = new Vector2I(2, 0);
 
@@ -103,7 +88,7 @@ public partial class Tiles : TileMap
 	{
 		base._EnterTree();
 
-		TilesArray = new TileArray(mapWidth, mapHeight);
+		TilesArray = new TileArray(mapWidth, mapHeight, this);
 		MountainPatterns = Enumerable.Range(0, this.TileSet.GetPatternsCount()).Select(i => this.TileSet.GetPattern(i)).ToList();
 
 		AddMountains();
@@ -127,7 +112,7 @@ public partial class Tiles : TileMap
 	{
 		var noise = GetNoise(mountainFrequency, mountainAmplitude);
 
-		var toPaintEmpty = new  Godot.Collections.Array<Vector2I>();
+		var toPaintEmpty = new Godot.Collections.Array<Vector2I>();
 
 		for (int x = 0; x < mapWidth; x++)
 		{
@@ -135,42 +120,18 @@ public partial class Tiles : TileMap
 			{
 				var noiseVal = noise.GetNoise2D(x, y);
 				var currentCell = TilesArray.Tiles[x, y];
-				if(currentCell.Type != TileTypes.Mountains)
+				if(currentCell.CurrentType == TileTypes.Blank && noiseVal > mountainThreshold && x < mapWidth - 3 && y < mapHeight - 3)
 				{
-					if (noiseVal > mountainThreshold && x < mapWidth - 3 && y < mapHeight - 3)
-					{
-						try
-						{
-
-						this.SetPattern(0, new Vector2I(x, y), MountainPatterns[new Random().Next(0, MountainPatterns.Count - 1)]);
-						TilesArray.Tiles[x, y].Type = TileTypes.Mountains;
-						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
-
-						TilesArray.Tiles[x+1, y].Type = TileTypes.Mountains;
-						TilesArray.Tiles[x+1, y].Coords = new Vector2I(x+1, y);
-
-						TilesArray.Tiles[x, y+1].Type = TileTypes.Mountains;
-						TilesArray.Tiles[x, y+1].Coords = new Vector2I(x, y+1);
-
-						TilesArray.Tiles[x+1, y+1].Type = TileTypes.Mountains;
-						TilesArray.Tiles[x+1, y+1].Coords = new Vector2I(x+1, y+1);
-						}
-						catch(Exception ex)
-						{
-							GD.PrintErr(ex.Message);
-						}
-					}
-					else
-					{
-						toPaintEmpty.Add(new Vector2I(x, y));
-						TilesArray.Tiles[x, y].Type = TileTypes.Empty;
-						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
-					}
+					this.SetPattern(0, new Vector2I(x, y), MountainPatterns[new Random().Next(0, MountainPatterns.Count - 1)]);
+					currentCell.ConvertTo(TileTypes.Mountains);	
+					TilesArray.Tiles[x + 1, y].ConvertTo(TileTypes.Mountains);	
+					TilesArray.Tiles[x, y + 1].ConvertTo(TileTypes.Mountains);	
+					TilesArray.Tiles[x + 1, y + 1].ConvertTo(TileTypes.Mountains);	
 				}
 			}
 		}
 
-		this.SetCellsTerrainConnect(0, toPaintEmpty, 0, EmptyTerrain);
+		this.SetCellsTerrainConnect(0, toPaintEmpty, 0, (int)TerrainTypes.Empty);
 	}
 
 	private void AddForest()
@@ -184,16 +145,15 @@ public partial class Tiles : TileMap
 			{
 				var noiseVal = noise.GetNoise2D(x, y);
 				var currentCell = TilesArray.Tiles[x, y];
-				if (noiseVal > forestThreshold && currentCell.Type != TileTypes.Mountains)
+				if (currentCell.CurrentType == TileTypes.Blank && noiseVal > forestThreshold)
 				{
 					toPaintForest.Add(new Vector2I(x, y));
-					TilesArray.Tiles[x, y].Type = TileTypes.Forest;
-					TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
+					currentCell.ConvertTo(TileTypes.Forest);
 				}
 			}
 		}
 
-		this.SetCellsTerrainConnect(0, toPaintForest, 0, ForestTerrain);
+		this.SetCellsTerrainConnect(0, toPaintForest, 0, (int)TerrainTypes.Forest);
 	}
 
 	private void AddWater()
@@ -206,15 +166,14 @@ public partial class Tiles : TileMap
 			{
 				var noiseVal = noise.GetNoise2D(x, y);
 				var currentCell = TilesArray.Tiles[x, y];
-				if (noiseVal > waterThreshold && currentCell.Type != TileTypes.Mountains)
+				if (currentCell.CurrentType == TileTypes.Blank && noiseVal > waterThreshold)
 				{
 					toPaintWater.Add(new Vector2I(x, y));
-					TilesArray.Tiles[x, y].Type = TileTypes.Water;
-					TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
+					currentCell.ConvertTo(TileTypes.Water);
 				}
 			}
 		}
-		this.SetCellsTerrainConnect(0, toPaintWater, 0, WaterTerrain);
+		this.SetCellsTerrainConnect(0, toPaintWater, 0, (int)TerrainTypes.Water);
 	}
 
 	private void AddFields()
@@ -228,29 +187,25 @@ public partial class Tiles : TileMap
 			{
 				var noiseVal = noise.GetNoise2D(x, y);
 				var currentCell = TilesArray.Tiles[x, y];
-				if (noiseVal > fieldThreshold && currentCell.Type != TileTypes.Mountains && currentCell.Type != TileTypes.Water && currentCell.Type != TileTypes.Forest)
+				if (currentCell.CurrentType == TileTypes.Blank && noiseVal > fieldThreshold)
 				{
-					if (noiseVal > farmhouseThreshold && !currentCell.SurroundingTiles.Any(t => t.Type == TileTypes.Farmhouse))
+					if (noiseVal > farmhouseThreshold && !currentCell.SurroundingTiles.Any(t => t.CurrentType == TileTypes.Farmhouse))
 					{
 						toPaintFarmhouse.Add(new Vector2I(x, y));
-						TilesArray.Tiles[x, y].Type = TileTypes.Farmhouse;
-						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
-						
+						currentCell.ConvertTo(TileTypes.Farmhouse);
 						if(Helpers.SpawnChance(0.1)) {
 							var mob = farmerScene.Instantiate() as Farmer;
-							mob.GlobalPosition = new Vector2(x*16,y*16);
+							mob.GlobalPosition = new Vector2(x*128,y*128);
 							AddChild(mob);
 						}
 					}
 					else
 					{
 						toPaintFields.Add(new Vector2I(x, y));
-						TilesArray.Tiles[x, y].Type = TileTypes.Fields;
-						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
-						
+						currentCell.ConvertTo(TileTypes.Fields);
 						if(Helpers.SpawnChance(0.01)) {
 							var mob = scareCrowScene.Instantiate() as ScareCrow;
-							mob.GlobalPosition = new Vector2(x*16,y*16);
+							mob.GlobalPosition = new Vector2(x*128,y*128);
 							AddChild(mob);
 						}
 					}
@@ -258,165 +213,59 @@ public partial class Tiles : TileMap
 				}
 			}
 		}
-		this.SetCellsTerrainConnect(0, toPaintFarmhouse, 0, FarmhouseTerrain);
-		this.SetCellsTerrainConnect(0, toPaintFields, 0, FieldTerrain);
+		this.SetCellsTerrainConnect(0, toPaintFarmhouse, 0, (int)TerrainTypes.Farmhouse);
+		this.SetCellsTerrainConnect(0, toPaintFields, 0, (int)TerrainTypes.Field);
 	}
+
+	public bool runSim { get; set; } = false;
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (!runSim) return;
 		var growableCells = TilesArray.GrowableCells;
 
 		for (int i = 8; i > 0; i--)
 		{
-			var priorityCells = growableCells.Where(t => t.SurroundingTiles.Where(m => m.Type == TileTypes.Fields).Count() == i).ToList();
+			var priorityCells = growableCells.Where(t => t.SurroundingTiles.Where(m => m.CanSpread).Count() == i).ToList();
 			if (priorityCells.Count > 0)
 			{
-					var random = new Random().Next(0, priorityCells.Count);
-					var randomCell = priorityCells[random];
-					this.SetCell(0, randomCell.Coords, sourceId: 0, atlasCoords: Fields);
-					TilesArray.Tiles[randomCell.Coords.X, randomCell.Coords.Y].Type = TileTypes.Fields;
-					TilesArray.Tiles[randomCell.Coords.X, randomCell.Coords.Y].InstantiateTile();
-					TilesArray.RemoveFromGrowableCells(randomCell);
-					TilesArray.AddToGrowableCells(randomCell.SurroundingTiles.Where(t => t.Type == TileTypes.Empty));
-					i = 0;
-
-			}
-		}
-
-	}
-}
-
-
-public enum TileTypes
-{
-	Empty,
-	Mountains,
-	Forest,
-	Water,
-	Fields,
-	Farmhouse
-}
-
-
-public class TileArray
-{
-	public TileItem[,] Tiles { get; set; }
-
-	public TileArray(int width, int height)
-	{
-		Tiles = new TileItem[width, height];
-		for (int x = 0; x < width; x++)
-		{
-			for (int y = 0; y < height; y++)
-			{
-				Tiles[x, y] = new TileItem(this);
+				var random = new Random().Next(0, priorityCells.Count);
+				var randomCell = priorityCells[random];
+				randomCell.ConvertTo(TileTypes.Fields);
+				i = 0;
 			}
 		}
 	}
 
-	private List<TileItem> growableCells;
-	public List<TileItem> GrowableCells
+	public TileItem GetTile(Vector2 global)
 	{
-		get
-		{
-			return growableCells;
-		}
-		set
-		{
-			growableCells = value;
-		}
+		Vector2I coords = LocalToMap(ToLocal(global));
+		return TilesArray.Tiles[coords.X, coords.Y];
 	}
 
-	public void AddToGrowableCells(IEnumerable<TileItem> tiles)
+	// @mika work on this thing too
+	public void SetTiles(Vector2I topLeft, Vector2I botRight, TileTypes type)
 	{
-		growableCells.AddRange(tiles);
-	}
+		List<Vector2I> tileList = new List<Vector2I>();
 
-	public void AddToGrowableCells(TileItem tile)
-	{
-		growableCells.Add(tile);
-	}
-
-	public void RemoveFromGrowableCells(IEnumerable<TileItem> tiles)
-	{
-		growableCells.RemoveAll(t => tiles.Contains(t));
-	}
-
-	public void RemoveFromGrowableCells(TileItem tile)
-	{
-		growableCells.Remove(tile);
-	}
-
-	public void InstantiateTiles()
-	{
-		foreach (var tile in Tiles)
+		if (type == TileTypes.Mountains)
 		{
-			tile.InstantiateTile();
+			throw new NotImplementedException("Cant Square Select mountains in...");
 		}
 
-		GrowableCells = Tiles.Cast<TileItem>().Where(t => t.CanGrow).ToList();
-	}
-	public class TileItem
-	{
-		public TileItem(TileArray thisParent)
-		{
-			parent = thisParent;
-		}
+		var toPaintEmpty = Enumerable.Range(topLeft.X, botRight.X).Select(x=> {
+			return Enumerable.Range(topLeft.Y, botRight.Y).Select(y=> {
 
-		public void InstantiateTile()
-		{
-			SurroundingTiles = GetSurroundingTiles();
-			CanGrow = GetCanGrow();
-		}
-		private TileArray parent;
-		public Vector2I Coords { get; set; }
-		public TileTypes Type { get; set; }
+				TilesArray.Tiles[x,y].ConvertTo(type);
 
-		public int Tier { get; set; }
+				return new Vector2I(x,y);
+			}).ToList();
+		}).ToList();
 
-		private List<TileItem> surroundingTiles;
+		var arr = new Godot.Collections.Array<Vector2I>(toPaintEmpty.SelectMany(x=>x).AsEnumerable());
 
-		public List<TileItem> SurroundingTiles
-		{
-			get
-			{
-				if (surroundingTiles == null)
-				{
-					surroundingTiles = GetSurroundingTiles();
-				}
-				return surroundingTiles;
-			}
-			set
-			{
-				surroundingTiles = value;
-			}
-		}
-		private bool canGrow;
-		public bool CanGrow
-		{
-			get
-			{
-				return canGrow;
-			}
-			set
-			{
-				canGrow = value;
-			}
-		}
-
-		private List<TileItem> GetSurroundingTiles()
-		{
-			return (from x in Enumerable.Range(Coords.X - 1, 3)
-					from y in Enumerable.Range(Coords.Y - 1, 3)
-					where x >= 0 && y >= 0 && x < parent.Tiles.GetLength(0) && y < parent.Tiles.GetLength(1) && (x != Coords.X || y != Coords.Y)
-					select parent.Tiles[x, y]).ToList();
-		}
-
-		private bool GetCanGrow()
-		{
-			return SurroundingTiles.Any(t => t.Type == TileTypes.Fields) && Type == TileTypes.Empty;
-		}
+		SetCellsTerrainConnect(0, arr, 0, (int)TerrainTypes.Empty);
 	}
 }
 
