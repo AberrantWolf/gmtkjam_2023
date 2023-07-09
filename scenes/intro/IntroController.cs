@@ -17,8 +17,10 @@ public partial class IntroController : Node
   {
     base._Ready();
     world = GetNode<World>(_world);
+    tileManager = GetNode<Tiles>(_tileManager);
+
     tileManager.SetTiles(new Vector2I(-16, -16), new Vector2I(16, 16), TileTypes.Empty);
-    tileManager.SetTiles(new Vector2I(0, 0), TileTypes.Forest);
+    tileManager.SetTile(new Vector2I(0, 0), TileTypes.Forest);
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.

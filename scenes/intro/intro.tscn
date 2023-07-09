@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dtw3l2qh2mtkf"]
+[gd_scene load_steps=23 format=3 uid="uid://dtw3l2qh2mtkf"]
 
 [ext_resource type="Texture2D" uid="uid://chipvn3oikmlr" path="res://assets/images/paper-tile.jpg" id="1_7o3tt"]
 [ext_resource type="PackedScene" uid="uid://c7wgl22d6yih5" path="res://scenes/Camera/Camera.tscn" id="1_po81o"]
@@ -16,6 +16,14 @@ region = Rect2(0, 0, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_c35o0"]
 atlas = ExtResource("5_opv7n")
 region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4tqk6"]
+atlas = ExtResource("4_kwpdl")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7jiv3"]
+atlas = ExtResource("4_kwpdl")
+region = Rect2(128, 128, 128, 128)
 
 [sub_resource type="Animation" id="Animation_l4mot"]
 resource_name = "intro"
@@ -122,6 +130,48 @@ _data = {
 "mouse_wiggle": SubResource("Animation_68nkv")
 }
 
+[sub_resource type="Animation" id="Animation_wqnr7"]
+resource_name = "arrow_fade"
+length = 15.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Tutorial UI/TargetRoot/Target:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(10, 11, 14, 15),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jdt13"]
+_data = {
+"arrow_fade": SubResource("Animation_wqnr7")
+}
+
+[sub_resource type="Animation" id="Animation_2b71f"]
+resource_name = "arrow_wiggle"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Tutorial UI/TargetRoot/Target:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-0.829031, -0.741765]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hton1"]
+_data = {
+"arrow_wiggle": SubResource("Animation_2b71f")
+}
+
 [node name="Intro" type="Node2D"]
 
 [node name="Camera" parent="." instance=ExtResource("1_po81o")]
@@ -135,10 +185,10 @@ follow_viewport_enabled = true
 
 [node name="Fade in" type="ColorRect" parent="UI"]
 modulate = Color(1, 1, 1, 0)
-offset_left = -4411.0
-offset_top = -1852.0
-offset_right = 3269.0
-offset_bottom = 2468.0
+offset_left = -4432.0
+offset_top = -1912.0
+offset_right = 3248.0
+offset_bottom = 2408.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 0)
@@ -377,7 +427,8 @@ metadata/_edit_use_anchors_ = true
 metadata/_edit_lock_ = true
 
 [node name="TileMap" parent="." instance=ExtResource("2_v6tbt")]
-layer_0/tile_data = PackedInt32Array(0, 589824, 4)
+layer_0/tile_data = PackedInt32Array()
+SpawnBads = false
 
 [node name="Tutorial UI" type="Control" parent="."]
 layout_mode = 3
@@ -391,9 +442,9 @@ grow_vertical = 2
 position = Vector2(64, 193)
 
 [node name="Mouse" type="Node2D" parent="Tutorial UI/MouseRoot"]
-modulate = Color(0.298039, 0.317647, 0.337255, 1)
-position = Vector2(24, 12)
-rotation = 0.20944
+modulate = Color(0.298039, 0.317647, 0.337255, 0)
+position = Vector2(-24, 12)
+rotation = -0.20944
 
 [node name="Arrow Left" type="Sprite2D" parent="Tutorial UI/MouseRoot/Mouse"]
 position = Vector2(-74, -12)
@@ -412,9 +463,40 @@ position = Vector2(1, 8.5)
 scale = Vector2(0.496094, 0.496094)
 texture = SubResource("AtlasTexture_c35o0")
 
+[node name="TargetRoot" type="Node2D" parent="Tutorial UI"]
+
+[node name="Target" type="Node2D" parent="Tutorial UI/TargetRoot"]
+modulate = Color(1, 1, 1, 0)
+rotation = -0.829031
+
+[node name="Arrow Left2" type="Sprite2D" parent="Tutorial UI/TargetRoot/Target"]
+position = Vector2(0, 69)
+rotation = 1.5708
+scale = Vector2(-0.5, 0.5)
+texture = SubResource("AtlasTexture_4tqk6")
+
+[node name="Arrow Right2" type="Sprite2D" parent="Tutorial UI/TargetRoot/Target"]
+position = Vector2(0, -70)
+rotation = -1.5708
+scale = Vector2(-0.5, 0.5)
+texture = SubResource("AtlasTexture_7jiv3")
+
+[node name="Arrow Left" type="Sprite2D" parent="Tutorial UI/TargetRoot/Target"]
+position = Vector2(-73, 0)
+scale = Vector2(0.5, -0.5)
+texture = SubResource("AtlasTexture_duual")
+
+[node name="Arrow Right" type="Sprite2D" parent="Tutorial UI/TargetRoot/Target"]
+position = Vector2(71, 0)
+rotation = 3.14159
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_duual")
+
+[node name="ScrollRoot" type="Node2D" parent="Tutorial UI"]
+
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("5_3rt5e")
-crowCount = 0
+IsTutorial = true
 
 [node name="CrowHiveMind" type="Node" parent="." node_paths=PackedStringArray("_mainCam")]
 script = ExtResource("5_bc3b8")
@@ -446,4 +528,17 @@ libraries = {
 "": SubResource("AnimationLibrary_eyqs0")
 }
 
-[node name="FadeOut" type="AnimationPlayer" parent="Animations"]
+[node name="Arrow Fade" type="AnimationPlayer" parent="Animations"]
+libraries = {
+"": SubResource("AnimationLibrary_jdt13")
+}
+
+[node name="Arrow Wiggle" type="AnimationPlayer" parent="Animations"]
+autoplay = "arrow_wiggle"
+libraries = {
+"": SubResource("AnimationLibrary_hton1")
+}
+
+[node name="Scroll Fade" type="AnimationPlayer" parent="Animations"]
+
+[node name="Fade Out" type="AnimationPlayer" parent="Animations"]
