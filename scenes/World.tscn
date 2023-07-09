@@ -142,3 +142,4 @@ stream = ExtResource("11_35tqy")
 
 [connection signal="button_up" from="MainCam/GameOver/Button" to="." method="_on_button_button_down"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]
+[connection signal="finished" from="caw" to="." method="_on_caw_finished"]

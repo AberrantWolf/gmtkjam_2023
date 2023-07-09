@@ -43,15 +43,16 @@ public partial class GameLoopController : Node
 	
 	public void Restart()
 	{
-		world.QueueFree();
-		time_alive = 0.0;
-		var scene = ResourceLoader.Load<PackedScene>("res://Scenes/World.tscn").Instantiate();
-		GetParent().AddChild(scene);
-		world = (World) scene;
-		var gameover = GetParent().GetNode<CanvasLayer>("World/MainCam/GameOver");
-		gameover.Hide();
-		game_over = false;
+//		world.QueueFree();
+//		time_alive = 0.0;
+//		var scene = ResourceLoader.Load<PackedScene>("res://Scenes/World.tscn").Instantiate();
+//		GetParent().AddChild(scene);
+//		world = (World) scene;
+//		var gameover = GetParent().GetNode<CanvasLayer>("World/MainCam/GameOver");
+//		gameover.Hide();
+//		game_over = false;
 		GetTree().Paused = false;
+		GetTree().ReloadCurrentScene();
 	}
 	
 	public double GetTimeAlive(){

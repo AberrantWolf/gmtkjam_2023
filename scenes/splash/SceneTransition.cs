@@ -18,6 +18,6 @@ public partial class SceneTransition : AnimationPlayer
 
   public void Transition()
   {
-    GetTree().ChangeSceneToPacked(scene);
+	GetTree().ChangeSceneToPacked(scene);
   }
 }
