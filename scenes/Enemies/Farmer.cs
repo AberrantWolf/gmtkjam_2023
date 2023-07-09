@@ -26,12 +26,16 @@ public partial class Farmer : EnemyEntity
 	public override void _Process(double delta)
 	{
 		var ClosestCrow = this.Crows.OrderBy(x=>x.Position.DistanceTo(this.Position)).FirstOrDefault();
-
 		var directionToClosestCrow = (this.Position - ClosestCrow.Position).Normalized();
-
 		directionToClosestCrow = directionToClosestCrow.Rotated((float)-1.55);
-
 		this.Light.Rotation = directionToClosestCrow.Angle();
+
+		Helpers.Debounce(Shoot, 5, delta, this.Name);
+	}
+
+	public void Shoot()
+	{
+		
 	}
 
 	protected override void onKilled()
