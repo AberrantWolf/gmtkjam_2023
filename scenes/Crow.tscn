@@ -171,7 +171,6 @@ color = Color(0, 0, 0, 1)
 color_ramp = SubResource("GradientTexture1D_30q00")
 
 [node name="Crow" type="Area2D" node_paths=PackedStringArray("CrowSprite", "StartParticles")]
-scale = Vector2(5, 5)
 collision_mask = 14
 linear_damp = -1.0
 script = ExtResource("1_85rju")
@@ -192,7 +191,7 @@ shape = SubResource("CircleShape2D_rixm5")
 
 [node name="CrowSprite" type="Sprite2D" parent="."]
 position = Vector2(-4.76837e-07, -7.15256e-07)
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("27_fn0as")
 region_enabled = true
 region_rect = Rect2(0, 0, 256, 256)
