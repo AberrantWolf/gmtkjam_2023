@@ -88,7 +88,7 @@ public partial class Tiles : TileMap
 	{
 		base._EnterTree();
 
-		TilesArray = new TileArray(mapWidth, mapHeight);
+		TilesArray = new TileArray(mapWidth, mapHeight, this);
 		MountainPatterns = Enumerable.Range(0, this.TileSet.GetPatternsCount()).Select(i => this.TileSet.GetPattern(i)).ToList();
 
 		AddMountains();
@@ -195,7 +195,7 @@ public partial class Tiles : TileMap
 						currentCell.ConvertTo(TileTypes.Farmhouse);
 						if(Helpers.SpawnChance(0.1)) {
 							var mob = farmerScene.Instantiate() as Farmer;
-							mob.GlobalPosition = new Vector2(x*16,y*16);
+							mob.GlobalPosition = new Vector2(x*128,y*128);
 							AddChild(mob);
 						}
 					}
@@ -205,7 +205,7 @@ public partial class Tiles : TileMap
 						currentCell.ConvertTo(TileTypes.Fields);
 						if(Helpers.SpawnChance(0.01)) {
 							var mob = scareCrowScene.Instantiate() as ScareCrow;
-							mob.GlobalPosition = new Vector2(x*16,y*16);
+							mob.GlobalPosition = new Vector2(x*128,y*128);
 							AddChild(mob);
 						}
 					}

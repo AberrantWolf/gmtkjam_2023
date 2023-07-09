@@ -11,7 +11,7 @@ public class TileItem
 	public int Health { get; private set; } = 1;
 	public int MaxHealth { get; private set; }
 	public bool CanBeAttacked { get; private set; }
-	public TileTypes CurrentType { get; private set;} = TileTypes.Blank;
+	public TileTypes CurrentType { get; private set; } = TileTypes.Blank;
 	public bool CanGrow
 	{
 		get; private set;
@@ -69,23 +69,26 @@ public class TileItem
 		}
 	}
 
-	// @mika check this and see if it works
-	public void Clone(TileItem target)
-	{
-		// if we're a spreadable, don't allow clone
-		if (CanSpread) return;
-		// clone only if target can clone and we can accept the growth
-		if (!CanGrow || !target.canSpread) return;
-
-		this.MaxHealth = target.MaxHealth;
-		this.Health = target.MaxHealth;
-		this.CanBeAttacked = target.CanBeAttacked;
-		this.canSpread = target.canSpread;
-		this.CanGrow = target.CanGrow;
-	}
-
 	public void Attack(int dmg)
 	{
+		this.Health -= dmg;
+
+		switch(this.CurrentType)
+		{
+			case TileTypes.Fields:
+				if(this.Health <= 0) {
+					this.ConvertTo(TileTypes.Empty);
+					this.parent.TileMap.SetCellsTerrainConnect(0, new Godot.Collections.Array<Vector2I>(){ this.Coords}, 0, (int)TerrainTypes.Empty);
+				}
+				break;
+			case TileTypes.Empty:
+				break;
+			case TileTypes.Farmhouse:
+				this.ConvertTo(TileTypes.Empty);
+				this.parent.TileMap.SetCellsTerrainConnect(0, new Godot.Collections.Array<Vector2I>(){ this.Coords}, 0, (int)TerrainTypes.Empty);
+				break;
+		}
+
 		// @mika put attack logic here and change the spirite
 		// when damaged to stages, show by going down the health tree
 		// potentially add a regen function?
@@ -103,7 +106,6 @@ public class TileItem
 	{
 		return SurroundingTiles.Any(t => t.CanSpread) && CanGrow;
 	}
-
 
 	public void ConvertTo(TileTypes targetType)
 	{

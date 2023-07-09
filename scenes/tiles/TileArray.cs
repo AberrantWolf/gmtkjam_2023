@@ -7,8 +7,11 @@ public class TileArray
 {
 	public TileItem[,] Tiles { get; set; }
 
-	public TileArray(int width, int height)
+	public Tiles TileMap;
+
+	public TileArray(int width, int height, Tiles tileMap)
 	{
+		this.TileMap = tileMap;
 		Tiles = new TileItem[width, height];
 		for (int x = 0; x < width; x++)
 		{
