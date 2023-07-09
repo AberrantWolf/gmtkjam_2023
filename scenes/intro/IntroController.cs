@@ -6,6 +6,11 @@ public partial class IntroController : Node
   [Export]
   public NodePath _world;
   public World world;
+
+  [Export]
+  public NodePath _tileManager;
+  public Tiles tileManager;
+
   CrowHiveMind mind = CrowHiveMind.Instance;
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
