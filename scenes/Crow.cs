@@ -171,6 +171,7 @@ public partial class Crow : Area2D
 					var rng = new RandomNumberGenerator();
 					sound.PitchScale = 1 + rng.RandfRange((float)-0.5, (float)0.5);
 					sound.Play();
+					
 					world.AddEnergy();
 				}
 			}

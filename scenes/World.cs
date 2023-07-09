@@ -8,14 +8,14 @@ public partial class World : Node2D
 	private string groupName = "crows";
 
 	[Export]
-	public int crowCount = 3;
+	public int crowCount = 0;
 
 	[Export]
 	private PackedScene crowScene = ResourceLoader.Load<PackedScene>("res://scenes/Crow.tscn");
 
 	private double time_expired = 0.0;
 	public double energy = 10;
-	private int min_energy = 10;
+	private int min_energy = 20;
 	private int crow_cost = 20;
 	private double energy_usage = 0.3;
 	
@@ -37,9 +37,9 @@ public partial class World : Node2D
 		GetNode<Label>("MainCam/UI/crowcount").Text = $"{crowCount} crows";
 		GetNode<Label>("MainCam/UI/energy").Text = $"{(int) energy} energy";
 		
-		if(this.energy >= (min_energy + crow_cost * (1+0.05*crowCount) ) )
+		if(this.energy >= (min_energy + crow_cost) )
 		{
-			this.energy -= this.crow_cost * (1+0.05*crowCount);
+			this.energy -= this.crow_cost;
 			this.AddAdditonalCrow();
 		}
 		
@@ -75,6 +75,7 @@ public partial class World : Node2D
 		var direction = (random.NextDouble() * (Math.PI * 2)) - Math.PI;
 		crow.GlobalRotation = (float)direction;
 		crow.AddToGroup(groupName);
+		crow.SetParent(this);
 		AddChild(crow);
 
 		var crows = GetTree().GetNodesInGroup(groupName).Select(x => x as Crow);
@@ -95,15 +96,23 @@ public partial class World : Node2D
 	}
 
 	public void AddEnergy(){
-//		GD.Print("monch");
-		this.energy += 1;
+		GD.Print("monch");
+		this.energy += 3;
 	}
 	
 	private void _on_button_button_down()
 	{
 		GetParent().GetNode<GameLoopController>("GameLoopController").Restart();
 	}
+	private void _on_death_timer_timeout()
+	{
+		if(energy<=0){
+			this.energy = 0;
+			UnceremoniouslyMonsterAHelplessCrow();
+		}
+	}
 }
+
 
 
 

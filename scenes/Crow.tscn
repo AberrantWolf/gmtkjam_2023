@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://d2mssdh3j62y"]
+[gd_scene load_steps=42 format=3 uid="uid://d2mssdh3j62y"]
 
 [ext_resource type="Script" path="res://scenes/Crow.cs" id="1_85rju"]
 [ext_resource type="PackedScene" uid="uid://s1vwdhxi3euk" path="res://scenes/CrowDespawn.tscn" id="2_redc5"]
@@ -30,6 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://bmx32gl01br7q" path="res://assets/images/crows.png" id="27_fn0as"]
 [ext_resource type="Texture2D" uid="uid://xymcwg8j5j5n" path="res://assets/images/crow_feather.png" id="28_yxjid"]
 [ext_resource type="Texture2D" uid="uid://lhh2b3vnb33f" path="res://assets/images/shockwave.png" id="29_kcsv5"]
+[ext_resource type="AudioStream" uid="uid://darmlq26oyj1h" path="res://sounds/munch.wav" id="31_mhpn7"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_p5gpf"]
 animations = [{
@@ -217,3 +218,6 @@ texture = ExtResource("29_kcsv5")
 lifetime = 0.4
 one_shot = true
 local_coords = true
+
+[node name="Monch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("31_mhpn7")

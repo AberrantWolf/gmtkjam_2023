@@ -22,6 +22,10 @@ public partial class GameLoopController : Node
 			game_over = true;
 			GameOver();
 		}
+//		if(!game_over && world.energy <= 0){
+//			game_over = true;
+//			GameOver();
+//		}
 		time_alive += delta;
 	}
 	
