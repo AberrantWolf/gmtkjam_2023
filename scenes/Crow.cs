@@ -23,22 +23,28 @@ public partial class Crow : Area2D
     [Export]
     public int NumCols = 4;
 
-    private int _MySpriteIndex;
-
     [Export]
     public Sprite2D CrowSprite;
 
     [Export]
     public GpuParticles2D[] StartParticles;
 
+    [Export]
+    public float MinRangeForCloseness = 100f;
+
+    [Export]
+    public float MaxRangeForCloseness = 1000f;
+
     private Vector2 lastDirection { get; set; } = Vector2.Right;
 
-    private IEnumerable<Crow> allCrows = null;
-    private Vector2 randomMultiplier { get; set; } = Vector2.Right;
-    private int AverageWeighting = 500;
+    private float TurningSpeed = 0.2f;
     private int FramesOfAddedWeight = 0;
     private int CurrentFramesOfAddedWeight = 0;
-    private int LocalCount = 0;
+    private float RangeForCloseness = 200f;
+    private float MouseComfortDistance = 100f;
+    private float Conformity = 0.5f;
+    private float NeedSpace = 1.5f;
+    private float SocialBubbleRadius = 20f;
 
     public override void _Input(InputEvent @event)
     {
@@ -58,58 +64,54 @@ public partial class Crow : Area2D
     public override void _Ready()
     {
         base._Ready();
-        // var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-        //animatedSprite2D.Play();
-        CrowHiveMind.Instance.AllCrows.Add(this);
-        updateWeightings(CrowHiveMind.Instance.AllCrows);
 
-        var totalCrowSprites = NumRows * NumCols;
-        _MySpriteIndex = (int)(GD.Randi() % totalCrowSprites);
-        var row = _MySpriteIndex / NumCols;
-        var col = _MySpriteIndex % NumRows;
+        // Let the hive mind know of our existence
+        CrowHiveMind.Instance.AllCrows.Add(this);
+
+        // Set initial behavior values
+        var rng = new RandomNumberGenerator();
+        this.lastDirection = new Vector2(rng.Randf(), rng.Randf()).Normalized();
+        this.MonsterBase = rng.RandfRange((float)0.2, (float)1.1);
+        this.FramesOfAddedWeight = rng.RandiRange(50, 250);
+        this.TurningSpeed = rng.RandfRange(0.05f, 0.1f);
+        this.RangeForCloseness = rng.RandfRange(MinRangeForCloseness, MaxRangeForCloseness);
+
+        // Choose a random sprite to be
+        int totalCrowSprites = NumRows * NumCols;
+        int mySpriteIndex = (int)(rng.Randi() % totalCrowSprites);
+        int row = mySpriteIndex / NumCols;
+        int col = mySpriteIndex % NumRows;
 
         CrowSprite.RegionRect = new Rect2(col * TileSize, row * TileSize, TileSize, TileSize);
 
+        // Play the startup particle effects
         foreach (var emitter in StartParticles)
         {
             emitter.Emitting = true;
         }
     }
 
-    public void updateWeightings(IEnumerable<Crow> Crows)
-    {
-        this.allCrows = Crows;
-        var rng = new RandomNumberGenerator();
-        this.MonsterBase = rng.RandfRange((float)0.2, (float)1.1);
-        this.AverageWeighting = rng.RandiRange(30, 100);
-        this.FramesOfAddedWeight = rng.RandiRange(50, 250);
-        this.randomMultiplier = new Vector2(rng.Randf(), rng.Randf());
-        this.LocalCount = this.allCrows.Count() / 10;
-        if (this.LocalCount == 0)
-        {
-            this.LocalCount = this.allCrows.Count();
-        }
-    }
-
-
     public override void _Process(double delta)
     {
         var mouseLocation = CrowHiveMind.Instance.MouseLocation;
 
         //Aim towards center
-
         var allCrows = CrowHiveMind.Instance.AllCrows;
         var centerOfMass = CrowHiveMind.Instance.CenterOfMass;
 
-        //avoid flying close
+        //Keep close
+        var closeCrows = allCrows.Where(crow => crow.Position.DistanceTo(this.Position) < this.RangeForCloseness);
+        Vector2 localAveragePosition = closeCrows.Select(crow => crow.Position).Average();
+        Vector2 localDirection = closeCrows.Select(crow => crow.lastDirection).Average().Normalized();
 
-        var closeCrows = allCrows.Where(crow => crow.Position.DistanceTo(this.Position) < this.LocalCount).ToList();
-        var localAverage = listAverage(closeCrows.Select(x => x.Position));
+        //...but not TOO close
+        var tooCloseCrows = allCrows.Where(crow => crow.Position.DistanceTo(this.Position) < SocialBubbleRadius);
+        var seekComfortVec = tooCloseCrows.Select(crow => (Position - crow.Position) / SocialBubbleRadius).Average();
 
-        //Head towards mouse location, avoiding com, equal goal
+        //Head towards mouse location
+        var toMouse = (mouseLocation - this.Position) / MouseComfortDistance;
 
-        var toMouse = (mouseLocation - this.Position).Normalized() * 5;
-
+        // Override mouse goal if ordered to attack somewhere
         if (CurrentFramesOfAddedWeight > 0)
         {
             CurrentFramesOfAddedWeight--;
@@ -117,16 +119,17 @@ public partial class Crow : Area2D
         }
 
         var toCOM = (centerOfMass - this.Position).Normalized();
-        var toLocalCOM = (this.Position - localAverage).Normalized();
+        var toLocalCOM = (localAveragePosition - this.Position).Normalized();
 
         var targetDirection = (
-            randomMultiplier
-            + toMouse
+            toMouse
+            + localDirection * Conformity
+            + seekComfortVec * NeedSpace
             + toCOM
-            + (toLocalCOM * 1000)
-        );
+            + (toLocalCOM)
+        ).Normalized();
 
-        this.lastDirection = ((lastDirection * this.AverageWeighting) + targetDirection).Normalized();
+        this.lastDirection = lastDirection.Slerp(targetDirection, this.TurningSpeed).Normalized();
 
         this.Position += lastDirection * ((float)delta * 300);
         this.Rotation = lastDirection.Angle();
@@ -164,10 +167,4 @@ public partial class Crow : Area2D
         Console.WriteLine("Field Monstered");
     }
 
-    private Vector2 listAverage(IEnumerable<Vector2> items)
-    {
-        return new Vector2(items.Select(x => x.X).Average(), items.Select(x => x.Y).Average());
-    }
-
 }
-

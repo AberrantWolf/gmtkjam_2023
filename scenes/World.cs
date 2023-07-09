@@ -49,12 +49,6 @@ public partial class World : Node2D
 		crow.GlobalRotation = (float)direction;
 		crow.AddToGroup(groupName);
 		AddChild(crow);
-
-		var crows = GetTree().GetNodesInGroup(groupName).Select(x=>x as Crow);
-		crows.All(x=> {
-			x.updateWeightings(crows);
-			return true;
-		});
 	}
 
 	public void UnceremoniouslyMonsterAHelplessCrow()
