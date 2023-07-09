@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://bad2ca6hfimqv"]
 
 [ext_resource type="Script" path="res://scenes/World.cs" id="1_p1gqh"]
-[ext_resource type="Script" path="res://scenes/MainCam.cs" id="2_iwym8"]
+[ext_resource type="PackedScene" uid="uid://diq4e7iyhe1j5" path="res://scenes/Camera/Camera.tscn" id="2_bx76c"]
 [ext_resource type="PackedScene" uid="uid://db5nqj7gpkm0m" path="res://scenes/tiles/Tiles.tscn" id="3_evb88"]
 [ext_resource type="PackedScene" uid="uid://dawefk8qthgdl" path="res://scenes/Enemies/ScareCrow.tscn" id="3_wc5q5"]
 [ext_resource type="AudioStream" uid="uid://bxmxgym7u1l0w" path="res://sounds/CountryMurder.wav" id="4_04mms"]
@@ -20,9 +20,66 @@ sources/0 = SubResource("TileSetAtlasSource_th5aq")
 [node name="World" type="Node2D"]
 script = ExtResource("1_p1gqh")
 
+[node name="Camera" parent="." instance=ExtResource("2_bx76c")]
+position = Vector2(16384, 16384)
+LimLeft = 0.0
+LimTop = 0.0
+LimRight = 32768.0
+LimBot = 32768.0
+
+[node name="soundtrack" type="AudioStreamPlayer" parent="Camera"]
+stream = ExtResource("4_04mms")
+autoplay = true
+
+[node name="GameOver" type="Control" parent="Camera"]
+process_mode = 2
+visible = false
+top_level = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 183.0
+
+[node name="ColorRect" type="ColorRect" parent="Camera/GameOver"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.239216, 0.239216, 0.239216, 1)
+
+[node name="Label" type="Label" parent="Camera/GameOver"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 38.0
+offset_right = 207.0
+offset_bottom = 64.0
+theme_override_colors/font_color = Color(0.968627, 0.968627, 0.968627, 1)
+text = "GAME OVER"
+
+[node name="Button" type="Button" parent="Camera/GameOver"]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 132.0
+offset_right = 201.0
+offset_bottom = 163.0
+text = "RESTART"
+
+[node name="timer" type="Label" parent="Camera/GameOver"]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 96.0
+offset_right = 265.0
+offset_bottom = 119.0
+theme_override_font_sizes/font_size = 11
+text = "you survived n seconds"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="CrowHiveMind" type="Node" parent="." node_paths=PackedStringArray("_mainCam")]
 script = ExtResource("6_5opnq")
-_mainCam = NodePath("../MainCam")
+_mainCam = NodePath("../Camera")
 
 [node name="ScareCrow" parent="." instance=ExtResource("3_wc5q5")]
 position = Vector2(765, 432)
@@ -37,59 +94,4 @@ layer_0/tile_data = PackedInt32Array()
 mapWidth = 256
 mapHeight = 256
 
-[node name="MainCam" type="Camera2D" parent="."]
-anchor_mode = 0
-zoom = Vector2(4, 4)
-script = ExtResource("2_iwym8")
-
-[node name="soundtrack" type="AudioStreamPlayer" parent="MainCam"]
-stream = ExtResource("4_04mms")
-autoplay = true
-
-[node name="GameOver" type="Control" parent="MainCam"]
-process_mode = 2
-visible = false
-top_level = true
-layout_mode = 3
-anchors_preset = 0
-offset_right = 320.0
-offset_bottom = 183.0
-
-[node name="ColorRect" type="ColorRect" parent="MainCam/GameOver"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.239216, 0.239216, 0.239216, 1)
-
-[node name="Label" type="Label" parent="MainCam/GameOver"]
-layout_mode = 0
-offset_left = 115.0
-offset_top = 38.0
-offset_right = 207.0
-offset_bottom = 64.0
-theme_override_colors/font_color = Color(0.968627, 0.968627, 0.968627, 1)
-text = "GAME OVER"
-
-[node name="Button" type="Button" parent="MainCam/GameOver"]
-layout_mode = 0
-offset_left = 126.0
-offset_top = 132.0
-offset_right = 201.0
-offset_bottom = 163.0
-text = "RESTART"
-
-[node name="timer" type="Label" parent="MainCam/GameOver"]
-layout_mode = 0
-offset_left = 60.0
-offset_top = 96.0
-offset_right = 265.0
-offset_bottom = 119.0
-theme_override_font_sizes/font_size = 11
-text = "you survived n seconds"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[connection signal="button_down" from="MainCam/GameOver/Button" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="Camera/GameOver/Button" to="." method="_on_button_button_down"]

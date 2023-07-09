@@ -24,6 +24,7 @@ public partial class ScareCrow : EnemyEntity
 	{
 		var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		animatedSprite2D.Animation = "death";
+		animatedSprite2D.Pause();
 		var rng = new RandomNumberGenerator();
 		var sound = GetNode<AudioStreamPlayer2D>($"Sounds/dead{rng.RandiRange(1,3)}");
 		sound.Play();
