@@ -21,7 +21,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 60.0
+"speed": 25.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iy3mu"]
@@ -35,7 +35,7 @@ shape = SubResource("RectangleShape2D_rd5gm")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_2w1u3")
-frame_progress = 0.667766
+frame_progress = 0.443453
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(2.08165e-12, 2.08165e-12)
