@@ -98,6 +98,11 @@ public partial class World : Node2D
 //		GD.Print("monch");
 		this.energy += 1;
 	}
+	
+	private void _on_button_button_down()
+	{
+		GetParent().GetNode<GameLoopController>("GameLoopController").Restart();
+	}
 }
 
 

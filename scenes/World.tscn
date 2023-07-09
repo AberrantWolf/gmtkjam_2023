@@ -20,8 +20,9 @@ sources/0 = SubResource("TileSetAtlasSource_th5aq")
 [node name="World" type="Node2D"]
 script = ExtResource("1_p1gqh")
 
-[node name="CrowHiveMind" type="Node" parent="."]
+[node name="CrowHiveMind" type="Node" parent="." node_paths=PackedStringArray("_mainCam")]
 script = ExtResource("6_5opnq")
+_mainCam = NodePath("../MainCam")
 
 [node name="ScareCrow" parent="." instance=ExtResource("3_wc5q5")]
 position = Vector2(765, 432)
