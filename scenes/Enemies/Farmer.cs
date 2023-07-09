@@ -59,7 +59,7 @@ public partial class Farmer : EnemyEntity
 	protected override void onKilled()
 	{
 		var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		animatedSprite2D.Hide();
+		animatedSprite2D.Animation = "death";
 		this.Light.Hide();
 		var rng = new RandomNumberGenerator();
 		var sound = GetNode<AudioStreamPlayer>($"Sounds/dead{rng.RandiRange(1,3)}");
