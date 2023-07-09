@@ -5,29 +5,29 @@ using Godot;
 
 public partial class Crow : Area2D
 {
-    [Export]
-    private string groupName = "crows";
+	[Export]
+	private string groupName = "crows";
 
-    [Export]
-    public int Speed = 100;
+	[Export]
+	public int Speed = 100;
 
-    [Export]
-    public int Separation = 100;
+	[Export]
+	public int Separation = 100;
 
-    [Export]
-    public int TileSize = 256;
+	[Export]
+	public int TileSize = 256;
 
-    [Export]
-    public int NumRows = 4;
+	[Export]
+	public int NumRows = 4;
 
-    [Export]
-    public int NumCols = 4;
+	[Export]
+	public int NumCols = 4;
 
     [Export]
     public Sprite2D CrowSprite;
 
-    [Export]
-    public GpuParticles2D[] StartParticles;
+	[Export]
+	public GpuParticles2D[] StartParticles;
 
     [Export]
     public float MinRangeForCloseness = 100f;
@@ -46,20 +46,20 @@ public partial class Crow : Area2D
     private float NeedSpace = 1.5f;
     private float SocialBubbleRadius = 20f;
 
-    public override void _Input(InputEvent @event)
-    {
-        if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Left)
-        {
-            CurrentFramesOfAddedWeight = this.FramesOfAddedWeight;
-        }
-    }
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Left)
+		{
+			CurrentFramesOfAddedWeight = this.FramesOfAddedWeight;
+		}
+	}
 
-    public override void _ExitTree()
-    {
-        base._ExitTree();
+	public override void _ExitTree()
+	{
+		base._ExitTree();
 
-        CrowHiveMind.Instance.AllCrows.Remove(this);
-    }
+		CrowHiveMind.Instance.AllCrows.Remove(this);
+	}
 
     public override void _Ready()
     {
@@ -82,7 +82,7 @@ public partial class Crow : Area2D
         int row = mySpriteIndex / NumCols;
         int col = mySpriteIndex % NumRows;
 
-        CrowSprite.RegionRect = new Rect2(col * TileSize, row * TileSize, TileSize, TileSize);
+		CrowSprite.RegionRect = new Rect2(col * TileSize, row * TileSize, TileSize, TileSize);
 
         // Play the startup particle effects
         foreach (var emitter in StartParticles)
@@ -131,40 +131,40 @@ public partial class Crow : Area2D
 
         this.lastDirection = lastDirection.Slerp(targetDirection, this.TurningSpeed).Normalized();
 
-        this.Position += lastDirection * ((float)delta * 300);
-        this.Rotation = lastDirection.Angle();
+		this.Position += lastDirection * ((float)delta * 300);
+		this.Rotation = lastDirection.Angle();
 
-        MonsterTimer -= delta;
-        if (MonsterTimer < 0)
-        {
-            MonsterTimer = MonsterBase;
-            Monster();
-        }
-    }
+		MonsterTimer -= delta;
+		if (MonsterTimer < 0)
+		{
+			MonsterTimer = MonsterBase;
+			Monster();
+		}
+	}
 
-    private double MonsterBase = 10;
-    private double MonsterTimer = 10;
+	private double MonsterBase = 10;
+	private double MonsterTimer = 10;
 
-    private void Monster()
-    {
-        try
-        {
-            var tiles = GetParent().GetNode<Tiles>("TileMap");
-            var x = (int)this.Position.X / 16;
-            var y = (int)this.Position.Y / 16;
+	private void Monster()
+	{
+		try
+		{
+			var tiles = GetParent().GetNode<Tiles>("TileMap");
+			var x = (int)this.Position.X / 16;
+			var y = (int)this.Position.Y / 16;
 
-            var tile = tiles.TilesArray.Tiles[x, y];
+			var tile = tiles.TilesArray.Tiles[x, y];
 
-            if (tile.Type == TileTypes.Fields)
-            {
-                tiles.TilesArray.Tiles[x, y].Type = TileTypes.Empty;
-                tiles.SetCell(0, new Vector2I(x, y), 0, atlasCoords: tiles.Empty);
-                //GetParent<World>().AddAdditonalCrow();
-            }
+			if (tile.Type == TileTypes.Fields)
+			{
+				tiles.TilesArray.Tiles[x, y].Type = TileTypes.Empty;
+				tiles.SetCell(0, new Vector2I(x, y), 0, atlasCoords: tiles.Empty);
+				//GetParent<World>().AddAdditonalCrow();
+			}
 
-        }
-        catch { }
-        Console.WriteLine("Field Monstered");
-    }
+		}
+		catch { }
+		Console.WriteLine("Field Monstered");
+	}
 
 }
