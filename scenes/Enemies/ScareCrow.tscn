@@ -1,9 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://dawefk8qthgdl"]
+[gd_scene load_steps=10 format=3 uid="uid://dawefk8qthgdl"]
 
 [ext_resource type="Script" path="res://scenes/Enemies/ScareCrow.cs" id="1_c5dtu"]
 [ext_resource type="Texture2D" uid="uid://cb0r8u4lpwix5" path="res://assets/sprites/scarecrow/scarecrow_0000_Layer-3.png" id="1_qdewf"]
 [ext_resource type="Texture2D" uid="uid://4nrg0c41the5" path="res://assets/sprites/scarecrow/scarecrow_0001_Layer-2-copy.png" id="2_3c04g"]
 [ext_resource type="Texture2D" uid="uid://yg243d7uvmnq" path="res://assets/sprites/scarecrow/scarecrow_0002_Layer-2.png" id="3_7ogsp"]
+[ext_resource type="AudioStream" uid="uid://dhlip5uoh2kt1" path="res://sounds/dead_scarecrow1.wav" id="5_xkpfm"]
+[ext_resource type="AudioStream" uid="uid://bpkwuidjl1q7r" path="res://sounds/dead_scarecrow2.wav" id="6_tc5h3"]
+[ext_resource type="AudioStream" uid="uid://cc7jn6df1anyl" path="res://sounds/dead_scarecrow3.wav" id="7_e8ssp"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0tsu8"]
 animations = [{
@@ -41,4 +44,18 @@ frame_progress = 0.161726
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_rrfod")
 
+[node name="Sounds" type="Node" parent="."]
+
+[node name="dead1" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("5_xkpfm")
+
+[node name="dead2" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("6_tc5h3")
+
+[node name="dead3" type="AudioStreamPlayer2D" parent="Sounds"]
+stream = ExtResource("7_e8ssp")
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="finished" from="Sounds/dead1" to="." method="_on_dead_1_finished"]
+[connection signal="finished" from="Sounds/dead2" to="." method="_on_dead_2_finished"]
+[connection signal="finished" from="Sounds/dead3" to="." method="_on_dead_3_finished"]

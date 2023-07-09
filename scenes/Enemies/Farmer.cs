@@ -47,6 +47,7 @@ public partial class Farmer : EnemyEntity
 		var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		animatedSprite2D.Hide();
 		this.Light.Hide();
+		
 	}
 	public void _on_area_entered(Crow crow)
 	{

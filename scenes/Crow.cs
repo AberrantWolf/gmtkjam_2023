@@ -5,144 +5,144 @@ using Godot;
 
 public partial class Crow : Area2D
 {
-    [Export]
-    private string groupName = "crows";
+	[Export]
+	private string groupName = "crows";
 
-    [Export]
-    public int Speed = 100;
+	[Export]
+	public int Speed = 100;
 
-    [Export]
-    public int Separation = 100;
+	[Export]
+	public int Separation = 100;
 
-    [Export]
-    public int TileSize = 256;
+	[Export]
+	public int TileSize = 256;
 
-    [Export]
-    public int NumRows = 4;
+	[Export]
+	public int NumRows = 4;
 
-    [Export]
-    public int NumCols = 4;
+	[Export]
+	public int NumCols = 4;
 
-    private int _MySpriteIndex;
+	private int _MySpriteIndex;
 
-    [Export]
-    public Sprite2D CrowSprite;
+	[Export]
+	public Sprite2D CrowSprite;
 
-    [Export]
-    public GpuParticles2D[] StartParticles;
+	[Export]
+	public GpuParticles2D[] StartParticles;
 
-    private Vector2 lastDirection { get; set; } = Vector2.Right;
+	private Vector2 lastDirection { get; set; } = Vector2.Right;
 
-    private IEnumerable<Crow> allCrows = null;
-    private Vector2 randomMultiplier { get; set; } = Vector2.Right;
-    private int AverageWeighting = 500;
-    private int FramesOfAddedWeight = 0;
-    private int CurrentFramesOfAddedWeight = 0;
-    private int LocalCount = 0;
+	private IEnumerable<Crow> allCrows = null;
+	private Vector2 randomMultiplier { get; set; } = Vector2.Right;
+	private int AverageWeighting = 500;
+	private int FramesOfAddedWeight = 0;
+	private int CurrentFramesOfAddedWeight = 0;
+	private int LocalCount = 0;
 	private double monsterFrequency = 0.0;
 
-    public override void _Input(InputEvent @event)
-    {
-        if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Left)
-        {
-            CurrentFramesOfAddedWeight = this.FramesOfAddedWeight;
-        }
-    }
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton mouseButton && mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Left)
+		{
+			CurrentFramesOfAddedWeight = this.FramesOfAddedWeight;
+		}
+	}
 
-    public override void _ExitTree()
-    {
-        base._ExitTree();
+	public override void _ExitTree()
+	{
+		base._ExitTree();
 
-        CrowHiveMind.Instance.AllCrows.Remove(this);
-    }
+		CrowHiveMind.Instance.AllCrows.Remove(this);
+	}
 
-    public override void _Ready()
-    {
-        base._Ready();
-        // var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-        //animatedSprite2D.Play();
-        CrowHiveMind.Instance.AllCrows.Add(this);
-        updateWeightings(CrowHiveMind.Instance.AllCrows);
+	public override void _Ready()
+	{
+		base._Ready();
+		// var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		//animatedSprite2D.Play();
+		CrowHiveMind.Instance.AllCrows.Add(this);
+		updateWeightings(CrowHiveMind.Instance.AllCrows);
 
-        var totalCrowSprites = NumRows * NumCols;
-        _MySpriteIndex = (int)(GD.Randi() % totalCrowSprites);
-        var row = _MySpriteIndex / NumCols;
-        var col = _MySpriteIndex % NumRows;
+		var totalCrowSprites = NumRows * NumCols;
+		_MySpriteIndex = (int)(GD.Randi() % totalCrowSprites);
+		var row = _MySpriteIndex / NumCols;
+		var col = _MySpriteIndex % NumRows;
 
-        CrowSprite.RegionRect = new Rect2(col * TileSize, row * TileSize, TileSize, TileSize);
+		CrowSprite.RegionRect = new Rect2(col * TileSize, row * TileSize, TileSize, TileSize);
 
-        foreach (var emitter in StartParticles)
-        {
-            emitter.Emitting = true;
-        }
-    }
+		foreach (var emitter in StartParticles)
+		{
+			emitter.Emitting = true;
+		}
+	}
 
-    public void updateWeightings(IEnumerable<Crow> Crows)
-    {
-        this.allCrows = Crows;
-        var rng = new RandomNumberGenerator();
-        this.monsterFrequency = rng.RandfRange((float)0.2, (float)1.1);
-        this.AverageWeighting = rng.RandiRange(30, 100);
-        this.FramesOfAddedWeight = rng.RandiRange(50, 250);
-        this.randomMultiplier = new Vector2(rng.Randf(), rng.Randf());
-        this.LocalCount = this.allCrows.Count() / 10;
-        if (this.LocalCount == 0)
-        {
-            this.LocalCount = this.allCrows.Count();
-        }
-    }
+	public void updateWeightings(IEnumerable<Crow> Crows)
+	{
+		this.allCrows = Crows;
+		var rng = new RandomNumberGenerator();
+		this.monsterFrequency = rng.RandfRange((float)0.2, (float)1.1);
+		this.AverageWeighting = rng.RandiRange(30, 100);
+		this.FramesOfAddedWeight = rng.RandiRange(50, 250);
+		this.randomMultiplier = new Vector2(rng.Randf(), rng.Randf());
+		this.LocalCount = this.allCrows.Count() / 10;
+		if (this.LocalCount == 0)
+		{
+			this.LocalCount = this.allCrows.Count();
+		}
+	}
 
 
-    public override void _Process(double delta)
-    {
-        var mouseLocation = CrowHiveMind.Instance.MouseLocation;
+	public override void _Process(double delta)
+	{
+		var mouseLocation = CrowHiveMind.Instance.MouseLocation;
 
-        //Aim towards center
+		//Aim towards center
 
-        var allCrows = CrowHiveMind.Instance.AllCrows;
-        var centerOfMass = CrowHiveMind.Instance.CenterOfMass;
+		var allCrows = CrowHiveMind.Instance.AllCrows;
+		var centerOfMass = CrowHiveMind.Instance.CenterOfMass;
 
-        //avoid flying close
+		//avoid flying close
 
-        var closeCrows = allCrows.Where(crow => crow.Position.DistanceTo(this.Position) < this.LocalCount).ToList();
-        var localAverage = listAverage(closeCrows.Select(x => x.Position));
+		var closeCrows = allCrows.Where(crow => crow.Position.DistanceTo(this.Position) < this.LocalCount).ToList();
+		var localAverage = listAverage(closeCrows.Select(x => x.Position));
 
-        //Head towards mouse location, avoiding com, equal goal
+		//Head towards mouse location, avoiding com, equal goal
 
-        var toMouse = (mouseLocation - this.Position).Normalized() * 5;
+		var toMouse = (mouseLocation - this.Position).Normalized() * 5;
 
-        if (CurrentFramesOfAddedWeight > 0)
-        {
-            CurrentFramesOfAddedWeight--;
-            toMouse = (CrowHiveMind.Instance.FocusPoint - this.Position).Normalized() * 100;
-        }
+		if (CurrentFramesOfAddedWeight > 0)
+		{
+			CurrentFramesOfAddedWeight--;
+			toMouse = (CrowHiveMind.Instance.FocusPoint - this.Position).Normalized() * 100;
+		}
 
-        var toCOM = (centerOfMass - this.Position).Normalized();
-        var toLocalCOM = (this.Position - localAverage).Normalized();
+		var toCOM = (centerOfMass - this.Position).Normalized();
+		var toLocalCOM = (this.Position - localAverage).Normalized();
 
-        var targetDirection = (
-            randomMultiplier
-            + toMouse
-            + toCOM
-            + (toLocalCOM * 1000)
-        );
+		var targetDirection = (
+			randomMultiplier
+			+ toMouse
+			+ toCOM
+			+ (toLocalCOM * 1000)
+		);
 
-        this.lastDirection = ((lastDirection * this.AverageWeighting) + targetDirection).Normalized();
+		this.lastDirection = ((lastDirection * this.AverageWeighting) + targetDirection).Normalized();
 
-        this.Position += lastDirection * ((float)delta * 300);
-        this.Rotation = lastDirection.Angle();
+		this.Position += lastDirection * ((float)delta * 300);
+		this.Rotation = lastDirection.Angle();
 
 
 		Helpers.Debounce(Monster, this.monsterFrequency, delta, this.Name);
-    }
+	}
 
-    private void Monster()
-    {
-        try
-        {
-            var tiles = GetParent().GetNode<Tiles>("TileMap");
-            var x = (int)this.Position.X / 16;
-            var y = (int)this.Position.Y / 16;
+	private void Monster()
+	{
+		try
+		{
+			var tiles = GetParent().GetNode<Tiles>("TileMap");
+			var x = (int)this.Position.X / 16;
+			var y = (int)this.Position.Y / 16;
 
 			var tilesArray = tiles.TilesArray.Tiles;
 
@@ -157,23 +157,26 @@ public partial class Crow : Area2D
 					var pos = new Vector2I(x, y);
 					tiles.TilesArray.Tiles[x, y].Type = TileTypes.Empty;
 
-                	tiles.SetCell(0, new Vector2I(x, y), 0, atlasCoords: tiles.Empty);
+					tiles.SetCell(0, new Vector2I(x, y), 0, atlasCoords: tiles.Empty);
 					//var prop = tiles.GetCellAtlasCoords(0, pos);
 					//prop.Y = prop.Y + 1;
 					//tiles.SetCell(0, pos, 0, atlasCoords: prop);
 					//GetParent<World>().AddAdditonalCrow();
-        			Console.WriteLine("Field Monstered");
-					GetNode<AudioStreamPlayer2D>("Monch").Play();
+					Console.WriteLine("Field Monstered");
+					var sound = GetNode<AudioStreamPlayer2D>("Monch");
+					var rng = new RandomNumberGenerator();
+					sound.PitchScale += rng.RandfRange(-0.5,0.5);
+					sound.Play();
 				}
 			}
-        }
-        catch { }
-    }
+		}
+		catch { }
+	}
 
-    private Vector2 listAverage(IEnumerable<Vector2> items)
-    {
-        return new Vector2(items.Select(x => x.X).Average(), items.Select(x => x.Y).Average());
-    }
+	private Vector2 listAverage(IEnumerable<Vector2> items)
+	{
+		return new Vector2(items.Select(x => x.X).Average(), items.Select(x => x.Y).Average());
+	}
 
 }
 
