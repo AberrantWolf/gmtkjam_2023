@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://d2mssdh3j62y"]
+[gd_scene load_steps=30 format=3 uid="uid://d2mssdh3j62y"]
 
 [ext_resource type="Script" path="res://scenes/Crow.cs" id="1_85rju"]
 [ext_resource type="Texture2D" uid="uid://ddtih5018pwx8" path="res://assets/sprites/crow/crow01.png" id="2_wtt0h"]
@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://dfbq21wfmx52" path="res://assets/sprites/crow/crow23.png" id="24_7lron"]
 [ext_resource type="Texture2D" uid="uid://cjx14152yrfde" path="res://assets/sprites/crow/crow24.png" id="25_j60rj"]
 [ext_resource type="Texture2D" uid="uid://1eek8smc6oys" path="res://assets/sprites/crow/crow25.png" id="26_6m7uq"]
+[ext_resource type="Texture2D" uid="uid://bmx32gl01br7q" path="res://assets/images/crows.png" id="27_fn0as"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_p5gpf"]
 animations = [{
@@ -113,17 +114,26 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_rixm5"]
 radius = 26.0192
 
-[node name="Crow" type="Area2D"]
+[node name="Crow" type="Area2D" node_paths=PackedStringArray("CrowSprite")]
 collision_mask = 14
 linear_damp = -1.0
 script = ExtResource("1_85rju")
 Speed = 500
 Separation = 15
+CrowSprite = NodePath("CrowSprite")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
 scale = Vector2(0.01, 0.01)
 sprite_frames = SubResource("SpriteFrames_p5gpf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_rixm5")
+
+[node name="CrowSprite" type="Sprite2D" parent="."]
+position = Vector2(-4.76837e-07, -7.15256e-07)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("27_fn0as")
+region_enabled = true
+region_rect = Rect2(0, 0, 256, 256)
