@@ -144,18 +144,29 @@ public partial class Crow : Area2D
             var x = (int)this.Position.X / 16;
             var y = (int)this.Position.Y / 16;
 
-            var tile = tiles.TilesArray.Tiles[x, y];
+			var tilesArray = tiles.TilesArray.Tiles;
 
-            if (tile.Type == TileTypes.Fields)
-            {
-                tiles.TilesArray.Tiles[x, y].Type = TileTypes.Empty;
-                tiles.SetCell(0, new Vector2I(x, y), 0, atlasCoords: tiles.Empty);
-                //GetParent<World>().AddAdditonalCrow();
-            }
+			var xlen = tilesArray.GetLength(0);
+			var ylen = tilesArray.GetLength(1);
 
+			if(xlen > x && x > 0 && ylen > y && y > 0) 
+			{
+				var tile = tiles.TilesArray.Tiles[x, y];
+				if (tile.Type == TileTypes.Fields)
+				{
+					var pos = new Vector2I(x, y);
+					tiles.TilesArray.Tiles[x, y].Type = TileTypes.Empty;
+
+                	tiles.SetCell(0, new Vector2I(x, y), 0, atlasCoords: tiles.Empty);
+					//var prop = tiles.GetCellAtlasCoords(0, pos);
+					//prop.Y = prop.Y + 1;
+					//tiles.SetCell(0, pos, 0, atlasCoords: prop);
+					//GetParent<World>().AddAdditonalCrow();
+        			Console.WriteLine("Field Monstered");
+				}
+			}
         }
         catch { }
-        Console.WriteLine("Field Monstered");
     }
 
     private Vector2 listAverage(IEnumerable<Vector2> items)

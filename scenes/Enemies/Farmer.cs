@@ -30,12 +30,16 @@ public partial class Farmer : EnemyEntity
 		directionToClosestCrow = directionToClosestCrow.Rotated((float)-1.55);
 		this.Light.Rotation = directionToClosestCrow.Angle();
 
-		Helpers.Debounce(Shoot, 5, delta, this.Name);
+		Helpers.Debounce(() => Shoot(ClosestCrow), 5, delta, this.Name);
 	}
 
-	public void Shoot()
+	public void Shoot(Crow closestCrow)
 	{
-		
+		var vectorToClosestCrow = (this.Position - closestCrow.Position);
+		if(vectorToClosestCrow.Length() < 10) {
+			Console.WriteLine("Bird killed");
+		}
+
 	}
 
 	protected override void onKilled()
