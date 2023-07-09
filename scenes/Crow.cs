@@ -141,8 +141,8 @@ public partial class Crow : Area2D
 		try
 		{
 			var tiles = GetParent().GetNode<Tiles>("TileMap");
-			var x = (int)this.Position.X / 16;
-			var y = (int)this.Position.Y / 16;
+			var x = (int)this.Position.X / 128;
+			var y = (int)this.Position.Y / 128;
 
 			var tilesArray = tiles.TilesArray.Tiles;
 
@@ -165,7 +165,7 @@ public partial class Crow : Area2D
 					Console.WriteLine("Field Monstered");
 					var sound = GetNode<AudioStreamPlayer2D>("Monch");
 					var rng = new RandomNumberGenerator();
-					sound.PitchScale += rng.RandfRange(-0.5,0.5);
+					sound.PitchScale += rng.RandfRange((float)-0.5,(float)0.5);
 					sound.Play();
 				}
 			}
