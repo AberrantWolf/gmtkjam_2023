@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://d2mssdh3j62y"]
+[gd_scene load_steps=40 format=3 uid="uid://d2mssdh3j62y"]
 
 [ext_resource type="Script" path="res://scenes/Crow.cs" id="1_85rju"]
 [ext_resource type="Texture2D" uid="uid://ddtih5018pwx8" path="res://assets/sprites/crow/crow01.png" id="2_wtt0h"]
@@ -27,6 +27,8 @@
 [ext_resource type="Texture2D" uid="uid://cjx14152yrfde" path="res://assets/sprites/crow/crow24.png" id="25_j60rj"]
 [ext_resource type="Texture2D" uid="uid://1eek8smc6oys" path="res://assets/sprites/crow/crow25.png" id="26_6m7uq"]
 [ext_resource type="Texture2D" uid="uid://bmx32gl01br7q" path="res://assets/images/crows.png" id="27_fn0as"]
+[ext_resource type="Texture2D" uid="uid://xymcwg8j5j5n" path="res://assets/images/crow_feather.png" id="28_yxjid"]
+[ext_resource type="Texture2D" uid="uid://lhh2b3vnb33f" path="res://assets/images/shockwave.png" id="29_kcsv5"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_p5gpf"]
 animations = [{
@@ -114,13 +116,66 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_rixm5"]
 radius = 26.0192
 
-[node name="Crow" type="Area2D" node_paths=PackedStringArray("CrowSprite")]
+[sub_resource type="Gradient" id="Gradient_2xyje"]
+offsets = PackedFloat32Array(0, 0.901679, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_q7ocl"]
+gradient = SubResource("Gradient_2xyje")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qvikp"]
+particle_flag_disable_z = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 600.0
+initial_velocity_max = 600.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+angle_min = -90.0
+angle_max = 90.0
+scale_min = 0.05
+scale_max = 0.05
+color_ramp = SubResource("GradientTexture1D_q7ocl")
+attractor_interaction_enabled = false
+
+[sub_resource type="Gradient" id="Gradient_c3ubm"]
+offsets = PackedFloat32Array(0, 0.258993, 0.501199, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.423948, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_30q00"]
+gradient = SubResource("Gradient_c3ubm")
+
+[sub_resource type="Curve" id="Curve_8p361"]
+_data = [Vector2(0, 0), 0.0, 1.88632, 0, 0, Vector2(1, 1), -0.285806, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2sdlj"]
+curve = SubResource("Curve_8p361")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7lbu1"]
+particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 800.0
+initial_velocity_max = 800.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 9.0
+scale_max = 9.0
+scale_curve = SubResource("CurveTexture_2sdlj")
+color_ramp = SubResource("GradientTexture1D_30q00")
+
+[node name="Crow" type="Area2D" node_paths=PackedStringArray("CrowSprite", "StartParticles")]
 collision_mask = 14
 linear_damp = -1.0
 script = ExtResource("1_85rju")
 Speed = 500
 Separation = 15
 CrowSprite = NodePath("CrowSprite")
+StartParticles = [NodePath("FeatherParticles"), NodePath("FeatherParticles/Shockwave")]
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -137,3 +192,25 @@ scale = Vector2(0.05, 0.05)
 texture = ExtResource("27_fn0as")
 region_enabled = true
 region_rect = Rect2(0, 0, 256, 256)
+
+[node name="FeatherParticles" type="GPUParticles2D" parent="."]
+position = Vector2(-4.76837e-07, -7.15256e-07)
+scale = Vector2(0.05, 0.05)
+emitting = false
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_qvikp")
+texture = ExtResource("28_yxjid")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.5
+randomness = 0.15
+fixed_fps = 0
+
+[node name="Shockwave" type="GPUParticles2D" parent="FeatherParticles"]
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_7lbu1")
+texture = ExtResource("29_kcsv5")
+lifetime = 0.4
+one_shot = true
+local_coords = true

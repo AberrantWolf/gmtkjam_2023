@@ -28,6 +28,9 @@ public partial class Crow : Area2D
     [Export]
     public Sprite2D CrowSprite;
 
+    [Export]
+    public GpuParticles2D[] StartParticles;
+
     private Vector2 lastDirection { get; set; } = Vector2.Right;
 
     private IEnumerable<Crow> allCrows = null;
@@ -66,6 +69,11 @@ public partial class Crow : Area2D
         var col = _MySpriteIndex % NumRows;
 
         CrowSprite.RegionRect = new Rect2(col * TileSize, row * TileSize, TileSize, TileSize);
+
+        foreach (var emitter in StartParticles)
+        {
+            emitter.Emitting = true;
+        }
     }
 
     public void updateWeightings(IEnumerable<Crow> Crows)
