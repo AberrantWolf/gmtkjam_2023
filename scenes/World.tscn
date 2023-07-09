@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://bxmxgym7u1l0w" path="res://sounds/CountryMurder.wav" id="4_04mms"]
 [ext_resource type="Texture2D" uid="uid://chipvn3oikmlr" path="res://assets/images/paper-tile.jpg" id="5_emrga"]
 [ext_resource type="Script" path="res://code/CrowHiveMind.cs" id="6_5opnq"]
+[ext_resource type="Script" path="res://scenes/Camera/Camera.cs" id="6_y3cc6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_th5aq"]
 texture = ExtResource("5_emrga")
@@ -20,66 +21,10 @@ sources/0 = SubResource("TileSetAtlasSource_th5aq")
 [node name="World" type="Node2D"]
 script = ExtResource("1_p1gqh")
 
-[node name="Camera" parent="." instance=ExtResource("2_bx76c")]
-position = Vector2(16384, 16384)
-LimLeft = 0.0
-LimTop = 0.0
-LimRight = 32768.0
-LimBot = 32768.0
-
-[node name="soundtrack" type="AudioStreamPlayer" parent="Camera"]
-stream = ExtResource("4_04mms")
-autoplay = true
-
-[node name="GameOver" type="Control" parent="Camera"]
-process_mode = 2
-visible = false
-top_level = true
-layout_mode = 3
-anchors_preset = 0
-offset_right = 320.0
-offset_bottom = 183.0
-
-[node name="ColorRect" type="ColorRect" parent="Camera/GameOver"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.239216, 0.239216, 0.239216, 1)
-
-[node name="Label" type="Label" parent="Camera/GameOver"]
-layout_mode = 0
-offset_left = 115.0
-offset_top = 38.0
-offset_right = 207.0
-offset_bottom = 64.0
-theme_override_colors/font_color = Color(0.968627, 0.968627, 0.968627, 1)
-text = "GAME OVER"
-
-[node name="Button" type="Button" parent="Camera/GameOver"]
-layout_mode = 0
-offset_left = 126.0
-offset_top = 132.0
-offset_right = 201.0
-offset_bottom = 163.0
-text = "RESTART"
-
-[node name="timer" type="Label" parent="Camera/GameOver"]
-layout_mode = 0
-offset_left = 60.0
-offset_top = 96.0
-offset_right = 265.0
-offset_bottom = 119.0
-theme_override_font_sizes/font_size = 11
-text = "you survived n seconds"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="CrowHiveMind" type="Node" parent="." node_paths=PackedStringArray("_mainCam")]
 script = ExtResource("6_5opnq")
-_mainCam = NodePath("../Camera")
+_mainCam = NodePath("../MainCamera")
 
 [node name="ScareCrow" parent="." instance=ExtResource("3_wc5q5")]
 position = Vector2(765, 432)
@@ -94,4 +39,99 @@ layer_0/tile_data = PackedInt32Array()
 mapWidth = 256
 mapHeight = 256
 
-[connection signal="button_down" from="Camera/GameOver/Button" to="." method="_on_button_button_down"]
+[node name="MainCam" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(4, 4)
+script = ExtResource("6_y3cc6")
+
+[node name="soundtrack" type="AudioStreamPlayer" parent="MainCam"]
+stream = ExtResource("4_04mms")
+autoplay = true
+
+[node name="GameOver" type="CanvasLayer" parent="MainCam"]
+process_mode = 2
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="MainCam/GameOver"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.239216, 0.239216, 0.239216, 1)
+
+[node name="Label" type="Label" parent="MainCam/GameOver"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -91.0
+offset_top = -56.0
+offset_right = 92.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.968627, 0.968627, 0.968627, 1)
+theme_override_font_sizes/font_size = 32
+text = "GAME OVER"
+
+[node name="Button" type="Button" parent="MainCam/GameOver"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -37.0
+offset_top = -215.0
+offset_right = 38.0
+offset_bottom = -166.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+text = "RESTART"
+
+[node name="timer" type="Label" parent="MainCam/GameOver"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.5
+offset_top = -11.5
+offset_right = 102.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 11
+text = "you survived n seconds"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UI" type="CanvasLayer" parent="MainCam"]
+
+[node name="time" type="Label" parent="MainCam/UI"]
+offset_left = 12.0
+offset_top = 11.0
+offset_right = 88.0
+offset_bottom = 37.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "3 crows"
+
+[node name="crowcount" type="Label" parent="MainCam/UI"]
+offset_left = 12.0
+offset_top = 38.0
+offset_right = 88.0
+offset_bottom = 64.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0 seconds"
+
+[node name="energy" type="Label" parent="MainCam/UI"]
+offset_left = 13.0
+offset_top = 66.0
+offset_right = 89.0
+offset_bottom = 92.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "0 energy"
+
+[connection signal="button_down" from="MainCam/GameOver/Button" to="." method="_on_button_button_down"]

@@ -23,8 +23,6 @@ public partial class GameLoopController : Node
 			GameOver();
 		}
 		time_alive += delta;
-		GD.Print(world.crowCount);
-		GD.Print(game_over);
 	}
 	
 	
@@ -32,7 +30,7 @@ public partial class GameLoopController : Node
 	{
 		var camera = world.GetNode<Camera2D>("MainCam");
 		camera.Zoom = new Vector2I(4,4);
-		camera.GetNode<Control>("GameOver").Show();
+		camera.GetNode<CanvasLayer>("GameOver").Show();
 		camera.GetNode<Label>("GameOver/timer").Text = $"you survived {(int) time_alive} seconds";
 		
 		GetTree().Paused = true;
@@ -41,12 +39,11 @@ public partial class GameLoopController : Node
 	public void Restart()
 	{
 		world.QueueFree();
-
+		time_alive = 0.0;
 		var scene = ResourceLoader.Load<PackedScene>("res://Scenes/World.tscn").Instantiate();
-		// Add the node as a child of the node the script is attached to.
 		GetParent().AddChild(scene);
 		world = (World) scene;
-		var gameover = GetParent().GetNode<Control>("World/MainCam/GameOver");
+		var gameover = GetParent().GetNode<CanvasLayer>("World/MainCam/GameOver");
 		gameover.Hide();
 		game_over = false;
 		GetTree().Paused = false;

@@ -13,11 +13,41 @@ public partial class World : Node2D
     [Export]
     private PackedScene crowScene = ResourceLoader.Load<PackedScene>("res://scenes/Crow.tscn");
 
-    public override void _EnterTree()
-    {
-        base._EnterTree();
-        AddCrows();
-    }
+	[Export]
+	private PackedScene crowScene = ResourceLoader.Load<PackedScene>("res://scenes/Crow.tscn");
+	private double time_expired = 0.0;
+	public double energy = 10;
+	private int min_energy = 10;
+	private int crow_cost = 20;
+	private double energy_usage = 0.3;
+	
+	public override void _EnterTree()
+	{
+		base._EnterTree();
+		AddCrows();
+	}
+
+	public override void _Ready()
+	{
+		base._Ready();
+	}
+	
+	public override void _Process(double delta)
+	{
+		time_expired += delta;
+		
+		GetNode<Label>("MainCam/UI/time").Text = $"{(int) time_expired} seconds";
+		GetNode<Label>("MainCam/UI/crowcount").Text = $"{crowCount} crows";
+		GetNode<Label>("MainCam/UI/energy").Text = $"{(int) energy} energy";
+		
+		if(this.energy >= (min_energy + crow_cost * (1+0.05*crowCount) ) )
+		{
+			this.energy -= this.crow_cost * (1+0.05*crowCount);
+			this.AddAdditonalCrow();
+		}
+		
+		this.energy -= crowCount * energy_usage * delta;
+	}
 
     public override void _Ready()
     {
@@ -59,35 +89,18 @@ public partial class World : Node2D
     }
 
     public void UnceremoniouslyMonsterAHelplessCrow()
-    {
         var crows = CrowHiveMind.Instance.AllCrows;
-        var helplessCrowToBeMurdered = crows.FirstOrDefault();
+    {
         crowCount--;
-        RemoveChild(helplessCrowToBeMurdered);
         helplessCrowToBeMurdered.Die();
+        RemoveChild(helplessCrowToBeMurdered);
+        var helplessCrowToBeMurdered = crows.FirstOrDefault();
     }
 
-    private void AddCrows()
-    {
-        var random = new Random();
-        var screenSize = GetViewportRect().Size;
-        var rng = new RandomNumberGenerator();
-        for (int i = 0; i < crowCount; i++)
-        {
-            var crow = crowScene.Instantiate() as Crow;
-            crow.Name = $"Crow{i}";
-            crow.GlobalPosition = new Vector2(rng.RandfRange(0, screenSize.X), rng.RandfRange(0, screenSize.Y));
-            var direction = (random.NextDouble() * (Math.PI * 2)) - Math.PI;
-            crow.GlobalRotation = (float)direction;
-            crow.AddToGroup(groupName);
-            AddChild(crow);
-        }
-    }
-    private void _on_button_button_down()
-    {
-        var game = GetParent();
-        game.GetNode<GameLoopController>("GameLoopController").Restart();
-    }
+	public void AddEnergy(){
+//		GD.Print("monch");
+		this.energy += 1;
+	}
 }
 
 
