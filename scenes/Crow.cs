@@ -56,6 +56,8 @@ public partial class Crow : Area2D
 		CrowHiveMind.Instance.AllCrows.Remove(this);
 	}
 
+	float scarfChance = 0.05f;
+
 	public override void _Ready()
 	{
 		base._Ready();
@@ -64,8 +66,13 @@ public partial class Crow : Area2D
 		CrowHiveMind.Instance.AllCrows.Add(this);
 		updateWeightings(CrowHiveMind.Instance.AllCrows);
 
-		var totalCrowSprites = NumRows * NumCols;
-		_MySpriteIndex = (int)(GD.Randi() % totalCrowSprites);
+		uint idx = 0;
+		uint spriteCount = (uint)(NumRows * NumCols);
+		if (GD.Randf() > scarfChance)
+		{
+			idx = GD.Randi() % spriteCount + 1;
+		}
+		_MySpriteIndex = (int)idx;
 		var row = _MySpriteIndex / NumCols;
 		var col = _MySpriteIndex % NumRows;
 
@@ -121,10 +128,10 @@ public partial class Crow : Area2D
 		var toLocalCOM = (this.Position - localAverage).Normalized();
 
 		var targetDirection = (
-			randomMultiplier
-			+ toMouse
-			+ toCOM
-			+ (toLocalCOM * 1000)
+		  randomMultiplier
+		  + toMouse
+		  + toCOM
+		  + (toLocalCOM * 1000)
 		);
 
 		this.lastDirection = ((lastDirection * this.AverageWeighting) + targetDirection).Normalized();
@@ -152,17 +159,9 @@ public partial class Crow : Area2D
 			if(xlen > x && x > 0 && ylen > y && y > 0) 
 			{
 				var tile = tiles.TilesArray.Tiles[x, y];
-				if (tile.Type == TileTypes.Fields)
-				{
-					var pos = new Vector2I(x, y);
-					tiles.TilesArray.Tiles[x, y].Type = TileTypes.Empty;
 
-					tiles.SetCell(0, new Vector2I(x, y), 0, atlasCoords: tiles.Empty);
-					//var prop = tiles.GetCellAtlasCoords(0, pos);
-					//prop.Y = prop.Y + 1;
-					//tiles.SetCell(0, pos, 0, atlasCoords: prop);
-					//GetParent<World>().AddAdditonalCrow();
-					Console.WriteLine("Field Monstered");
+				if(tile.CanBeAttacked) {
+					tile.Attack(1);
 					var sound = GetNode<AudioStreamPlayer2D>("Monch");
 					var rng = new RandomNumberGenerator();
 					sound.PitchScale = 1 + rng.RandfRange((float)-0.5,(float)0.5);
