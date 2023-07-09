@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bad2ca6hfimqv"]
+[gd_scene load_steps=8 format=3 uid="uid://bad2ca6hfimqv"]
 
 [ext_resource type="Script" path="res://scenes/World.cs" id="1_p1gqh"]
 [ext_resource type="Script" path="res://scenes/MainCam.cs" id="2_iwym8"]
 [ext_resource type="PackedScene" uid="uid://db5nqj7gpkm0m" path="res://scenes/tiles/Tiles.tscn" id="3_evb88"]
 [ext_resource type="PackedScene" uid="uid://dawefk8qthgdl" path="res://scenes/Enemies/ScareCrow.tscn" id="3_wc5q5"]
+[ext_resource type="AudioStream" uid="uid://bxmxgym7u1l0w" path="res://sounds/CountryMurder.wav" id="4_04mms"]
+[ext_resource type="Script" path="res://scenes/tiles/Tiles.cs" id="4_4rxjd"]
 [ext_resource type="Texture2D" uid="uid://chipvn3oikmlr" path="res://assets/images/paper-tile.jpg" id="5_emrga"]
 [ext_resource type="Script" path="res://code/CrowHiveMind.cs" id="6_5opnq"]
 
@@ -27,6 +29,10 @@ _mainCam = NodePath("../MainCam")
 anchor_mode = 0
 zoom = Vector2(4, 4)
 script = ExtResource("2_iwym8")
+
+[node name="soundtrack" type="AudioStreamPlayer2D" parent="MainCam"]
+stream = ExtResource("4_04mms")
+autoplay = true
 
 [node name="ScareCrow" parent="." instance=ExtResource("3_wc5q5")]
 position = Vector2(765, 432)
