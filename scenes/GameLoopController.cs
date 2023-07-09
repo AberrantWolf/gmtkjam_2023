@@ -33,6 +33,7 @@ public partial class GameLoopController : Node
 	public void GameOver()
 	{
 		var camera = world.GetNode<Camera2D>("MainCam");
+		world.GetNode<Label>("MainCam/UI/crowcount").Text = "0 crows";
 		camera.Zoom = new Vector2I(4,4);
 		camera.GetNode<CanvasLayer>("GameOver").Show();
 		camera.GetNode<Label>("GameOver/timer").Text = $"you survived {(int) time_alive} seconds";

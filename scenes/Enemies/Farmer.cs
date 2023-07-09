@@ -5,7 +5,7 @@ using System.Linq;
 
 public partial class Farmer : EnemyEntity
 {
-	public Farmer() : base(100) { }
+	public Farmer() : base(50) { }
 
 	private Sprite2D Light;
 	private bool ouch_playing = false;

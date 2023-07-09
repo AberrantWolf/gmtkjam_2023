@@ -39,7 +39,6 @@ mapHeight = 256
 
 [node name="MainCam" type="Camera2D" parent="."]
 anchor_mode = 0
-zoom = Vector2(4, 4)
 script = ExtResource("6_y3cc6")
 
 [node name="soundtrack" type="AudioStreamPlayer" parent="MainCam"]
