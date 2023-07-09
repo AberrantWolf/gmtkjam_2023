@@ -50,7 +50,7 @@ public partial class Farmer : EnemyEntity
 			var bullet = GetNode<Area2D>("Bullet");
 			bullet.Position = this.GlobalPosition;
 			bullet.Show();
-			GetNode<AudioStreamPlayer2D>("ShotSound").Play();
+			GetNode<AudioStreamPlayer2D>("Sounds/shotgun").Play();
 			ShotFired = true;
 		}
 		this.ShotVector = vectorToClosestCrow.Normalized();
@@ -69,4 +69,24 @@ public partial class Farmer : EnemyEntity
 	{
 		this.TakeHit();
 	}
+	
+	private void _on_dead_1_finished()
+	{
+		this.QueueFree();
+	}
+
+
+	private void _on_dead_2_finished()
+	{
+		this.QueueFree();
+	}
+
+
+	private void _on_dead_3_finished()
+	{
+		this.QueueFree();
+	}
 }
+
+
+
