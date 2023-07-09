@@ -72,11 +72,12 @@ public class TileItem
 	public void Attack(int dmg)
 	{
 		this.Health -= dmg;
-		var currentAtlas = this.parent.TileMap.GetCellAtlasCoords(0, this.Coords);
+		//var currentAtlas = this.parent.TileMap.GetCellAtlasCoords(0, this.Coords);
 
 		switch(this.CurrentType)
 		{
 			case TileTypes.Fields:
+				//This is supposed to modulate what is being eaten
 				//this.parent.TileMap.SetCell(0, this.Coords, atlasCoords: new Vector2I(currentAtlas.X, currentAtlas.Y + 1));
 				if(this.Health <= 0) {
 					this.ConvertTo(TileTypes.Empty);
