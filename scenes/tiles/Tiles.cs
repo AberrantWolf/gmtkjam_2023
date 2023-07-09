@@ -65,16 +65,38 @@ public partial class Tiles : TileMap
 
 	[Export]
 	public Vector2I Empty = new Vector2I(0, 0);
+	
 	[Export]
 	public Vector2I Mountains = new Vector2I(2, 1);
+	
 	[Export]
 	public Vector2I Forest = new Vector2I(0, 1);
+	
 	[Export]
 	public Vector2I Water = new Vector2I(1, 1);
+	
+	[Export]
+	public int EmptyTerrain = 4;
+	
+	[Export]
+	public int ForestTerrain = 2;
+	
+	[Export]
+	public int WaterTerrain = 0;
+
+	[Export]
+	public int FieldTerrain = 1;
+
+	[Export]
+	public int FarmhouseTerrain = 3;
+
 	[Export]
 	public Vector2I Fields = new Vector2I(1, 0);
+	
 	[Export]
 	public Vector2I Farmhouse = new Vector2I(2, 0);
+
+	public List<TileMapPattern> MountainPatterns;
 
 	public TileArray TilesArray { get; set; }
 	public override void _EnterTree()
@@ -82,6 +104,7 @@ public partial class Tiles : TileMap
 		base._EnterTree();
 
 		TilesArray = new TileArray(mapWidth, mapHeight);
+		MountainPatterns = Enumerable.Range(0, this.TileSet.GetPatternsCount()).Select(i => this.TileSet.GetPattern(i)).ToList();
 
 		AddMountains();
 		AddForest();
@@ -104,82 +127,112 @@ public partial class Tiles : TileMap
 	{
 		var noise = GetNoise(mountainFrequency, mountainAmplitude);
 
+		var toPaintEmpty = new  Godot.Collections.Array<Vector2I>();
+
 		for (int x = 0; x < mapWidth; x++)
 		{
 			for (int y = 0; y < mapHeight; y++)
 			{
 				var noiseVal = noise.GetNoise2D(x, y);
-				if (noiseVal > mountainThreshold)
+				var currentCell = TilesArray.Tiles[x, y];
+				if(currentCell.Type != TileTypes.Mountains)
 				{
-					this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Mountains);
-					TilesArray.Tiles[x, y].Type = TileTypes.Mountains;
-					TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
-				}
-				else
-				{
-					this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Empty);
-					TilesArray.Tiles[x, y].Type = TileTypes.Empty;
-					TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
+					if (noiseVal > mountainThreshold && x < mapWidth - 3 && y < mapHeight - 3)
+					{
+						try
+						{
+
+						this.SetPattern(0, new Vector2I(x, y), MountainPatterns[new Random().Next(0, MountainPatterns.Count - 1)]);
+						TilesArray.Tiles[x, y].Type = TileTypes.Mountains;
+						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
+
+						TilesArray.Tiles[x+1, y].Type = TileTypes.Mountains;
+						TilesArray.Tiles[x+1, y].Coords = new Vector2I(x+1, y);
+
+						TilesArray.Tiles[x, y+1].Type = TileTypes.Mountains;
+						TilesArray.Tiles[x, y+1].Coords = new Vector2I(x, y+1);
+
+						TilesArray.Tiles[x+1, y+1].Type = TileTypes.Mountains;
+						TilesArray.Tiles[x+1, y+1].Coords = new Vector2I(x+1, y+1);
+						}
+						catch(Exception ex)
+						{
+							GD.PrintErr(ex.Message);
+						}
+					}
+					else
+					{
+						toPaintEmpty.Add(new Vector2I(x, y));
+						TilesArray.Tiles[x, y].Type = TileTypes.Empty;
+						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
+					}
 				}
 			}
 		}
+
+		this.SetCellsTerrainConnect(0, toPaintEmpty, 0, EmptyTerrain);
 	}
 
 	private void AddForest()
 	{
 		var noise = GetNoise(forestFrequency, forestAmplitude);
 
+		var toPaintForest = new Godot.Collections.Array<Vector2I>();
 		for (int x = 0; x < mapWidth; x++)
 		{
 			for (int y = 0; y < mapHeight; y++)
 			{
 				var noiseVal = noise.GetNoise2D(x, y);
-				var currentCell = this.GetCellAtlasCoords(0, new Vector2I(x, y));
-				if (noiseVal > forestThreshold && currentCell != Mountains)
+				var currentCell = TilesArray.Tiles[x, y];
+				if (noiseVal > forestThreshold && currentCell.Type != TileTypes.Mountains)
 				{
-					this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Forest);
+					toPaintForest.Add(new Vector2I(x, y));
 					TilesArray.Tiles[x, y].Type = TileTypes.Forest;
 					TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
 				}
 			}
 		}
+
+		this.SetCellsTerrainConnect(0, toPaintForest, 0, ForestTerrain);
 	}
 
 	private void AddWater()
 	{
 		var noise = GetNoise(waterFrequency, waterAmplitude);
-
+		var toPaintWater = new Godot.Collections.Array<Vector2I>();
 		for (int x = 0; x < mapWidth; x++)
 		{
 			for (int y = 0; y < mapHeight; y++)
 			{
 				var noiseVal = noise.GetNoise2D(x, y);
-				var currentCell = this.GetCellAtlasCoords(0, new Vector2I(x, y));
-				if (noiseVal > waterThreshold && currentCell != Mountains)
+				var currentCell = TilesArray.Tiles[x, y];
+				if (noiseVal > waterThreshold && currentCell.Type != TileTypes.Mountains)
 				{
-					this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Water);
+					toPaintWater.Add(new Vector2I(x, y));
 					TilesArray.Tiles[x, y].Type = TileTypes.Water;
 					TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
 				}
 			}
 		}
+		this.SetCellsTerrainConnect(0, toPaintWater, 0, WaterTerrain);
 	}
 
 	private void AddFields()
 	{
 		var noise = GetNoise(fieldFrequency, fieldAmplitude);
-
+		var toPaintFields = new Godot.Collections.Array<Vector2I>();
+		var toPaintFarmhouse = new Godot.Collections.Array<Vector2I>();
 		for (int x = 0; x < mapWidth; x++)
 		{
 			for (int y = 0; y < mapHeight; y++)
 			{
 				var noiseVal = noise.GetNoise2D(x, y);
-				var currentCell = this.GetCellAtlasCoords(0, new Vector2I(x, y));
-				if (noiseVal > fieldThreshold && currentCell != Mountains && currentCell != Forest && currentCell != Water)
+				var currentCell = TilesArray.Tiles[x, y];
+				if (noiseVal > fieldThreshold && currentCell.Type != TileTypes.Mountains && currentCell.Type != TileTypes.Water && currentCell.Type != TileTypes.Forest)
 				{
-					if (noiseVal > farmhouseThreshold && !this.GetSurroundingCells(new Vector2I(x, y)).Any(c => this.GetCellAtlasCoords(0, c) == Farmhouse))
+					if (noiseVal > farmhouseThreshold && !currentCell.SurroundingTiles.Any(t => t.Type == TileTypes.Farmhouse))
 					{
-						this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Farmhouse);
+						toPaintFarmhouse.Add(new Vector2I(x, y));
 						TilesArray.Tiles[x, y].Type = TileTypes.Farmhouse;
 						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
 						
@@ -191,7 +244,7 @@ public partial class Tiles : TileMap
 					}
 					else
 					{
-						this.SetCell(0, new Vector2I(x, y), sourceId: 0, atlasCoords: Fields);
+						toPaintFields.Add(new Vector2I(x, y));
 						TilesArray.Tiles[x, y].Type = TileTypes.Fields;
 						TilesArray.Tiles[x, y].Coords = new Vector2I(x, y);
 						
@@ -205,6 +258,8 @@ public partial class Tiles : TileMap
 				}
 			}
 		}
+		this.SetCellsTerrainConnect(0, toPaintFarmhouse, 0, FarmhouseTerrain);
+		this.SetCellsTerrainConnect(0, toPaintFields, 0, FieldTerrain);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -217,8 +272,6 @@ public partial class Tiles : TileMap
 			var priorityCells = growableCells.Where(t => t.SurroundingTiles.Where(m => m.Type == TileTypes.Fields).Count() == i).ToList();
 			if (priorityCells.Count > 0)
 			{
-				try
-				{
 					var random = new Random().Next(0, priorityCells.Count);
 					var randomCell = priorityCells[random];
 					this.SetCell(0, randomCell.Coords, sourceId: 0, atlasCoords: Fields);
@@ -227,11 +280,7 @@ public partial class Tiles : TileMap
 					TilesArray.RemoveFromGrowableCells(randomCell);
 					TilesArray.AddToGrowableCells(randomCell.SurroundingTiles.Where(t => t.Type == TileTypes.Empty));
 					i = 0;
-				}
-				catch (Exception ex)
-				{
-					GD.PrintErr(ex.Message);
-				}
+
 			}
 		}
 
@@ -317,19 +366,8 @@ public class TileArray
 
 		public void InstantiateTile()
 		{
-			SurroundingTiles = (from x in Enumerable.Range(Coords.X - 1, 3)
-								from y in Enumerable.Range(Coords.Y - 1, 3)
-								where x >= 0 && y >= 0 && x < parent.Tiles.GetLength(0) && y < parent.Tiles.GetLength(1) && (x != Coords.X || y != Coords.Y)
-								select parent.Tiles[x, y]).ToList();
-
-			if (SurroundingTiles.Any(t => t.Type == TileTypes.Fields) && Type == TileTypes.Empty)
-			{
-				CanGrow = true;
-			}
-			else
-			{
-				CanGrow = false;
-			}
+			SurroundingTiles = GetSurroundingTiles();
+			CanGrow = GetCanGrow();
 		}
 		private TileArray parent;
 		public Vector2I Coords { get; set; }
@@ -343,6 +381,10 @@ public class TileArray
 		{
 			get
 			{
+				if (surroundingTiles == null)
+				{
+					surroundingTiles = GetSurroundingTiles();
+				}
 				return surroundingTiles;
 			}
 			set
@@ -361,6 +403,19 @@ public class TileArray
 			{
 				canGrow = value;
 			}
+		}
+
+		private List<TileItem> GetSurroundingTiles()
+		{
+			return (from x in Enumerable.Range(Coords.X - 1, 3)
+					from y in Enumerable.Range(Coords.Y - 1, 3)
+					where x >= 0 && y >= 0 && x < parent.Tiles.GetLength(0) && y < parent.Tiles.GetLength(1) && (x != Coords.X || y != Coords.Y)
+					select parent.Tiles[x, y]).ToList();
+		}
+
+		private bool GetCanGrow()
+		{
+			return SurroundingTiles.Any(t => t.Type == TileTypes.Fields) && Type == TileTypes.Empty;
 		}
 	}
 }

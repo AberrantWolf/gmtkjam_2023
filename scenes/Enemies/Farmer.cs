@@ -31,15 +31,29 @@ public partial class Farmer : EnemyEntity
 		this.Light.Rotation = directionToClosestCrow.Angle();
 
 		Helpers.Debounce(() => Shoot(ClosestCrow), 5, delta, this.Name);
+		if(ShotFired) { 
+			Helpers.Debounce(() => {
+				ShotFired = false;
+				//GetNode<Area2D>("Bullet").Hide();
+			}, 2, delta, this.Name + "reload");
+			var bullet = GetNode<Area2D>("Bullet");
+			bullet.Position = new Vector2(bullet.Position.X + ShotVector.X, bullet.Position.Y + ShotVector.Y);
+		}
 	}
 
+	private Vector2 ShotVector;
+	private bool ShotFired = false;
 	public void Shoot(Crow closestCrow)
 	{
 		var vectorToClosestCrow = (this.Position - closestCrow.Position);
-		if(vectorToClosestCrow.Length() < 10) {
-			Console.WriteLine("Bird killed");
+		if(vectorToClosestCrow.Length() < 500) {
+			var bullet = GetNode<Area2D>("Bullet");
+			bullet.Position = this.GlobalPosition;
+			bullet.Show();
+			GetNode<AudioStreamPlayer2D>("ShotSound").Play();
+			ShotFired = true;
 		}
-
+		this.ShotVector = vectorToClosestCrow.Normalized();
 	}
 
 	protected override void onKilled()
@@ -47,7 +61,9 @@ public partial class Farmer : EnemyEntity
 		var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		animatedSprite2D.Hide();
 		this.Light.Hide();
-		
+		var rng = new RandomNumberGenerator();
+		var sound = GetNode<AudioStreamPlayer2D>($"Sounds/dead{rng.RandiRange(1,3)}");
+		sound.Play();
 	}
 	public void _on_area_entered(Crow crow)
 	{
