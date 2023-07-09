@@ -39,6 +39,9 @@ public partial class Farmer : EnemyEntity
 		var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		animatedSprite2D.Hide();
 		this.Light.Hide();
+		var rng = new RandomNumberGenerator();
+		var sound = GetNode<AudioStreamPlayer2D>($"Sounds/dead{rng.RandiRange(1,3)}");
+		sound.Play();
 	}
 	public void _on_area_entered(Crow crow)
 	{
