@@ -163,6 +163,7 @@ public partial class Crow : Area2D
 					//tiles.SetCell(0, pos, 0, atlasCoords: prop);
 					//GetParent<World>().AddAdditonalCrow();
         			Console.WriteLine("Field Monstered");
+					GetNode<AudioStreamPlayer2D>("Monch").Play();
 				}
 			}
         }
