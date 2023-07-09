@@ -25,6 +25,7 @@ public partial class FadeOut : Control
 
   public void StartReset()
   {
+    GD.Print("wewo");
     ap.Play("reset");
   }
 
@@ -35,6 +36,7 @@ public partial class FadeOut : Control
 
   public void OnAnimationEndReload()
   {
+    GD.Print("weow");
     GetTree().Paused = false;
     GetTree().ReloadCurrentScene();
   }

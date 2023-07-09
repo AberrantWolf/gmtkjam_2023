@@ -6,6 +6,11 @@ public partial class GameLoopController : Node
   [Export]
   private NodePath _world;
 
+
+  [Export]
+  public NodePath _fade;
+  public FadeOut fade;
+
   private World world;
   private bool game_over = false;
   private double time_alive = 0.0;
@@ -13,6 +18,7 @@ public partial class GameLoopController : Node
   public override void _Ready()
   {
     world = GetNode<World>(_world);
+    fade = GetNode<FadeOut>(_fade);
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -44,16 +50,12 @@ public partial class GameLoopController : Node
 
   public void Restart()
   {
-    //		world.QueueFree();
-    //		time_alive = 0.0;
-    //		var scene = ResourceLoader.Load<PackedScene>("res://Scenes/World.tscn").Instantiate();
-    //		GetParent().AddChild(scene);
-    //		world = (World) scene;
-    //		var gameover = GetParent().GetNode<CanvasLayer>("World/MainCam/GameOver");
-    //		gameover.Hide();
-    //		game_over = false;
-    GetTree().Paused = false;
-    GetTree().ReloadCurrentScene();
+    // GetTree().Paused = false;
+    // GetTree().ReloadCurrentScene();
+
+    GD.Print("wowee");
+    // fade.StartReset();
+    fade.StartNextScene();
   }
 
   public double GetTimeAlive()
@@ -61,6 +63,3 @@ public partial class GameLoopController : Node
     return time_alive;
   }
 }
-
-
-

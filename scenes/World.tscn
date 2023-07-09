@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bad2ca6hfimqv"]
+[gd_scene load_steps=14 format=3 uid="uid://bad2ca6hfimqv"]
 
 [ext_resource type="Script" path="res://scenes/World.cs" id="1_p1gqh"]
 [ext_resource type="PackedScene" uid="uid://db5nqj7gpkm0m" path="res://scenes/tiles/Tiles.tscn" id="3_evb88"]
@@ -11,8 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://dl7sqo5rdlyyg" path="res://assets/button/restart-3.png" id="9_xf7a0"]
 [ext_resource type="Texture2D" uid="uid://b5r8vi3gmuh0p" path="res://assets/button/restart-2.png" id="10_ssw0s"]
 [ext_resource type="AudioStream" uid="uid://bpfqc1efjf1br" path="res://sounds/dead_crow2.wav" id="11_35tqy"]
-[ext_resource type="PackedScene" uid="uid://dgcrqmfag3m6x" path="res://scenes/Fade/FadeIn.tscn" id="12_cgo4g"]
-[ext_resource type="PackedScene" uid="uid://cvr1grluvd15t" path="res://scenes/Fade/FadeOut.tscn" id="13_o6qxu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_th5aq"]
 texture = ExtResource("5_emrga")
@@ -141,15 +139,6 @@ autostart = true
 
 [node name="caw" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_35tqy")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 2
-scale = Vector2(10000, 10000)
-transform = Transform2D(10000, 0, 0, 10000, 0, 0)
-
-[node name="FadeIn" parent="CanvasLayer" instance=ExtResource("12_cgo4g")]
-
-[node name="FadeOut" parent="CanvasLayer" instance=ExtResource("13_o6qxu")]
 
 [connection signal="button_up" from="MainCam/GameOver/Button" to="." method="_on_button_button_down"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_death_timer_timeout"]
