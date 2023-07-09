@@ -185,7 +185,7 @@ LimLeft = 0.0
 LimTop = 0.0
 LimRight = 8192.0
 LimBot = 8192.0
-ZoomTarget = Vector2(2, 2)
+ZoomTarget = Vector2(1, 1)
 ControlLock = true
 
 [node name="UI" type="CanvasLayer" parent="."]
@@ -197,7 +197,7 @@ offset_right = 8192.0
 offset_bottom = 8192.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color(0, 0, 0, 1)
+color = Color(0, 0, 0, 0)
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 3
@@ -442,8 +442,8 @@ position = Vector2(4160, 4266)
 
 [node name="Mouse" type="Node2D" parent="Tutorial UI/MouseRoot"]
 modulate = Color(0.298039, 0.317647, 0.337255, 0)
-position = Vector2(-24, 12)
-rotation = -0.20944
+position = Vector2(24, 12)
+rotation = 0.20944
 
 [node name="Arrow Left" type="Sprite2D" parent="Tutorial UI/MouseRoot/Mouse"]
 position = Vector2(-74, -12)
@@ -463,11 +463,12 @@ scale = Vector2(0.496094, 0.496094)
 texture = SubResource("AtlasTexture_c35o0")
 
 [node name="TargetRoot" type="Node2D" parent="Tutorial UI"]
-position = Vector2(4652, 4160)
+position = Vector2(4589, 4223)
+scale = Vector2(3, 3)
 
 [node name="Target" type="Node2D" parent="Tutorial UI/TargetRoot"]
 modulate = Color(1, 1, 1, 0)
-rotation = -0.829031
+rotation = -0.741765
 
 [node name="Arrow Left2" type="Sprite2D" parent="Tutorial UI/TargetRoot/Target"]
 position = Vector2(0, 69)
@@ -496,11 +497,9 @@ texture = SubResource("AtlasTexture_duual")
 
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("5_3rt5e")
-IsTutorial = true
 
 [node name="TileMap" parent="World" instance=ExtResource("2_v6tbt")]
 layer_0/tile_data = PackedInt32Array()
-SpawnBads = false
 
 [node name="CrowHiveMind" type="Node" parent="." node_paths=PackedStringArray("_mainCam")]
 script = ExtResource("5_bc3b8")
@@ -534,6 +533,7 @@ libraries = {
 }
 
 [node name="Arrow Fade" type="AnimationPlayer" parent="Animations"]
+autoplay = "arrow_fade"
 libraries = {
 "": SubResource("AnimationLibrary_jdt13")
 }
