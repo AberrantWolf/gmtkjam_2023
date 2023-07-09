@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://diq4e7iyhe1j5"]
+
+[ext_resource type="Texture2D" uid="uid://ki27m1vgm00r" path="res://assets/images/paper.jpg" id="1_qjq6g"]
+[ext_resource type="PackedScene" uid="uid://c7wgl22d6yih5" path="res://scenes/Camera/Camera.tscn" id="2_b6e05"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="BG" type="Sprite2D" parent="."]
+texture = ExtResource("1_qjq6g")
+
+[node name="Camera" parent="." instance=ExtResource("2_b6e05")]
