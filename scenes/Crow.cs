@@ -39,6 +39,7 @@ public partial class Crow : Area2D
 	private int FramesOfAddedWeight = 0;
 	private int CurrentFramesOfAddedWeight = 0;
 	private int LocalCount = 0;
+	private double monsterFrequency = 0.0;
 
 	public override void _Input(InputEvent @event)
 	{
@@ -87,7 +88,7 @@ public partial class Crow : Area2D
 	{
 		this.allCrows = Crows;
 		var rng = new RandomNumberGenerator();
-		this.MonsterBase = rng.RandfRange((float)0.2, (float)1.1);
+		this.monsterFrequency = rng.RandfRange((float)0.2, (float)1.1);
 		this.AverageWeighting = rng.RandiRange(30, 100);
 		this.FramesOfAddedWeight = rng.RandiRange(50, 250);
 		this.randomMultiplier = new Vector2(rng.Randf(), rng.Randf());
@@ -138,34 +139,35 @@ public partial class Crow : Area2D
 		this.Position += lastDirection * ((float)delta * 300);
 		this.Rotation = lastDirection.Angle();
 
-		MonsterTimer -= delta;
-		if (MonsterTimer < 0)
-		{
-			MonsterTimer = MonsterBase;
-			Monster();
-		}
-	}
 
-	private double MonsterBase = 10;
-	private double MonsterTimer = 10;
+		Helpers.Debounce(Monster, this.monsterFrequency, delta, this.Name);
+	}
 
 	private void Monster()
 	{
 		try
 		{
 			var tiles = GetParent().GetNode<Tiles>("TileMap");
-			var x = (int)this.Position.X / 16;
-			var y = (int)this.Position.Y / 16;
+			var x = (int)this.Position.X / 128;
+			var y = (int)this.Position.Y / 128;
 
-			var tile = tiles.TilesArray.Tiles[x, y];
+			var tilesArray = tiles.TilesArray.Tiles;
 
-			if (tile.CanBeAttacked)
+			var xlen = tilesArray.GetLength(0);
+			var ylen = tilesArray.GetLength(1);
+
+			if(xlen > x && x > 0 && ylen > y && y > 0) 
 			{
-				tile.Attack(1);
-				//GetParent<World>().AddAdditonalCrow();
-				// Console.WriteLine("Field Monstered");
-			}
+				var tile = tiles.TilesArray.Tiles[x, y];
 
+				if(tile.CanBeAttacked) {
+					tile.Attack(1);
+					var sound = GetNode<AudioStreamPlayer2D>("Monch");
+					var rng = new RandomNumberGenerator();
+					sound.PitchScale = 1 + rng.RandfRange((float)-0.5,(float)0.5);
+					sound.Play();
+				}
+			}
 		}
 		catch { }
 	}
