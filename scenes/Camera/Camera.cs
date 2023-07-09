@@ -8,16 +8,16 @@ public partial class Camera : Camera2D
   public float ZoomSpeed = 1.1f;
 
   [Export]
-  public float MaxZoom = 10f;
+  public float MaxZoom = 2f;
 
   [Export]
-  public float MinZoom = 0.1f;
+  public float MinZoom = 0.25f;
 
   [Export]
-  public float PanThreshold = 200f;
+  public float PanThreshold = 256f;
 
   [Export]
-  public float PanSpeed = 1f;
+  public float PanSpeed = 1024f;
   [Export]
   public float LimLeft = -4096f;
   [Export]
@@ -27,7 +27,7 @@ public partial class Camera : Camera2D
   [Export]
   public float LimBot = 4096f;
 
-  private Vector2 zoomTarget;
+  public Vector2 zoomTarget { get; set; }
 
   public override void _Ready()
   {
